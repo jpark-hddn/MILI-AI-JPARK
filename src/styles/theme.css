@@ -534,6 +534,10 @@ html.light-mode [data-theme-surface="home"] [data-name="Header"] [data-name="But
   stroke: #26333b !important;
 }
 
+html.light-mode [data-theme-surface="home"] {
+  background: #f2f5f1 !important;
+}
+
 html.light-mode aside nav span[style*="color: white"],
 html.light-mode aside span[style*="color: white"],
 html.light-mode aside p[style*="color: rgb(161"],
