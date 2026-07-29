@@ -36,6 +36,7 @@ interface TargetCursorProps {
   parallaxOn?: boolean;
   cursorColor?: string;
   cursorColorOnTarget?: string;
+  resetKey?: string;
 }
 
 const TargetCursor = ({
@@ -45,7 +46,8 @@ const TargetCursor = ({
   hoverDuration = 0.2,
   parallaxOn = true,
   cursorColor = '#ffffff',
-  cursorColorOnTarget
+  cursorColorOnTarget,
+  resetKey
 }: TargetCursorProps) => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const cornersRef = useRef<NodeListOf<Element> | null>(null);
@@ -324,12 +326,17 @@ const TargetCursor = ({
       window.removeEventListener('mouseup', mouseUpHandler);
       if (activeTarget) cleanupTarget(activeTarget);
       spinTl.current?.kill();
+      gsap.killTweensOf(cursor);
+      gsap.set(cursor, { scale: 1, rotation: 0 });
+      if (cornersRef.current) {
+        gsap.set(Array.from(cornersRef.current), { x: 0, y: 0 });
+      }
       document.body.style.cursor = originalCursor;
       isActiveRef.current = false;
       targetCornerPositionsRef.current = null;
       activeStrengthRef.current.current = 0;
     };
-  }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, isMobile, hoverDuration, parallaxOn, cursorColor, cursorColorOnTarget]);
+  }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, isMobile, hoverDuration, parallaxOn, cursorColor, cursorColorOnTarget, resetKey]);
 
   useEffect(() => {
     if (isMobile || !cursorRef.current || !spinTl.current) return;

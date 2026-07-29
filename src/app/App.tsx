@@ -1822,7 +1822,7 @@ export default function App() {
   return (
     <ThemeContext.Provider value={{ mode: themeMode, toggle: toggleTheme }}>
       <TargetCursor spinDuration={5} hideDefaultCursor parallaxOn hoverDuration={0.3}
-        cursorColor={themeMode === 'light' ? '#15191d' : '#ffffff'} cursorColorOnTarget="#8edb00" targetSelector=".cursor-target" />
+        resetKey={currentPage} cursorColor={themeMode === 'light' ? '#15191d' : '#ffffff'} cursorColorOnTarget="#8edb00" targetSelector=".cursor-target" />
       <Toaster position="bottom-right" theme={themeMode} toastOptions={{
         style: themeMode === 'light'
           ? { background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', color: '#17191d' }
