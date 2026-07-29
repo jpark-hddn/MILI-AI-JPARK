@@ -1479,7 +1479,7 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
 function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLElement>(null);
-  const [contentScale, setContentScale] = useState({ x: 1, y: 1 });
+  const [contentFit, setContentFit] = useState({ scale: 1, left: 0, top: 0 });
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -1487,9 +1487,14 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
 
     const update = () => {
       const rect = viewport.getBoundingClientRect();
-      setContentScale({
-        x: rect.width / HOME_CONTENT_WIDTH,
-        y: rect.height / HOME_DESIGN_HEIGHT,
+      const scale = Math.min(
+        rect.width / HOME_CONTENT_WIDTH,
+        rect.height / HOME_DESIGN_HEIGHT,
+      );
+      setContentFit({
+        scale,
+        left: (rect.width - (HOME_CONTENT_WIDTH * scale)) / 2,
+        top: (rect.height - (HOME_DESIGN_HEIGHT * scale)) / 2,
       });
     };
     update();
@@ -1599,12 +1604,16 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
     <div className="flex size-full bg-[#0c0c0d]">
       <VodDesktopSidebar activeNav={0} navigate={navigate} />
       <main ref={viewportRef} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]">
+        <img src={imgBg} alt="" aria-hidden className="absolute inset-0 size-full object-cover pointer-events-none -scale-x-100 opacity-75" />
+        <div className="absolute inset-0 bg-black/25 pointer-events-none" />
         <div
-          className="absolute left-0 top-0"
+          className="absolute overflow-hidden"
           style={{
             width: HOME_CONTENT_WIDTH,
             height: HOME_DESIGN_HEIGHT,
-            transform: `scale(${contentScale.x}, ${contentScale.y})`,
+            left: contentFit.left,
+            top: contentFit.top,
+            transform: `scale(${contentFit.scale})`,
             transformOrigin: 'left top',
           }}
         >
