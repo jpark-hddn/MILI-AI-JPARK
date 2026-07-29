@@ -59,6 +59,7 @@ const TargetCursor = ({
   const targetCornerPositionsRef = useRef<{ x: number; y: number }[] | null>(null);
   const tickerFnRef = useRef<(() => void) | null>(null);
   const activeStrengthRef = useRef({ current: 0 });
+  const suppressTargetsUntilRef = useRef(0);
 
   const isMobile = useMemo(() => {
     if (typeof window === 'undefined') return false;
@@ -170,8 +171,17 @@ const TargetCursor = ({
     };
     window.addEventListener('mousemove', moveHandler);
 
-    const clickHandler = () => currentLeaveHandler?.();
+    const clickHandler = () => {
+      suppressTargetsUntilRef.current = performance.now() + 600;
+      currentLeaveHandler?.();
+    };
     window.addEventListener('click', clickHandler);
+
+    const navigationResetHandler = () => {
+      suppressTargetsUntilRef.current = performance.now() + 600;
+      currentLeaveHandler?.();
+    };
+    window.addEventListener('mili:cursor-reset', navigationResetHandler);
 
     const targetObserver = new MutationObserver(() => {
       if (activeTarget && !activeTarget.isConnected) currentLeaveHandler?.();
@@ -209,6 +219,7 @@ const TargetCursor = ({
     window.addEventListener('mouseup', mouseUpHandler);
 
     const enterHandler = (e: MouseEvent) => {
+      if (performance.now() < suppressTargetsUntilRef.current) return;
       const directTarget = e.target as Element;
       const allTargets: Element[] = [];
       let current: Element | null = directTarget;
@@ -337,6 +348,7 @@ const TargetCursor = ({
       if (tickerFnRef.current) gsap.ticker.remove(tickerFnRef.current);
       window.removeEventListener('mousemove', moveHandler);
       window.removeEventListener('click', clickHandler);
+      window.removeEventListener('mili:cursor-reset', navigationResetHandler);
       window.removeEventListener('mouseover', enterHandler as EventListener);
       window.removeEventListener('scroll', scrollHandler);
       window.removeEventListener('resize', resizeHandler);

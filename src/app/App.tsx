@@ -1775,6 +1775,7 @@ export default function App() {
   }, [applyHistoryRoute]);
 
   const pushRoute = useCallback((route: { page: Page; nav?: number; courseId?: number; projectId?: number; lesson?: number }) => {
+    window.dispatchEvent(new Event('mili:cursor-reset'));
     window.history.pushState({ miliRoute: route }, '', window.location.href);
     applyHistoryRoute(route);
   }, [applyHistoryRoute]);
