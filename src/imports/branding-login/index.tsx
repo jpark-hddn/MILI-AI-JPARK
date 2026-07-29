@@ -1320,7 +1320,7 @@ function Group9() {
     <div className="absolute contents left-[27px] top-[30px]">
       <div className="absolute h-[221px] left-[27px] top-[30px] w-[198px]" data-name="스크린샷 2026-07-28 오후 1.12.21 1">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img alt="김철수 상병 프로필" className="absolute inset-0 size-full object-cover object-top" src={profileImage} />
+          <img alt="김철수 상병 프로필" className="absolute inset-0 size-full object-contain object-top" src={profileImage} />
         </div>
       </div>
     </div>

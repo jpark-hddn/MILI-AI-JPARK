@@ -245,7 +245,7 @@ function CourseCard({ course, compact, onOpen }: { course: Course; compact?: boo
 
   return (
     <button
-      className="cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
+      className="page-card-reveal cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(course) : toast(course.topic, { description: '강의를 시작합니다', duration: 1500 })}>
       {/* Thumbnail */}
       <div className={`theme-gradient-surface relative w-full ${compact ? 'aspect-[4/2.8]' : 'aspect-[4/2.5]'} flex items-center justify-center overflow-hidden`}
@@ -492,7 +492,7 @@ function CourseDetailBody({ course, onBack, onStartLesson, mobile }: { course: C
         /* Mobile: stacked, info card first */
         <div className="px-4 pt-5 pb-10 space-y-4">
           {/* Info card */}
-          <div className="rounded-[16px] bg-[rgba(255,255,255,0.03)] border border-white/[0.08] p-4 space-y-3">
+          <div className="page-card-reveal rounded-[16px] bg-[rgba(255,255,255,0.03)] border border-white/[0.08] p-4 space-y-3">
             <div className="grid grid-cols-2 gap-y-3">
               {[
                 { label: '수강 기간', value: '2026-01-01\n~ 2026-12-31' },
@@ -513,12 +513,12 @@ function CourseDetailBody({ course, onBack, onStartLesson, mobile }: { course: C
             </button>
           </div>
           {/* 강의 소개 */}
-          <section className={`rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
+          <section className={`page-card-reveal rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
             <h2 className={`${titleSize} font-bold text-white mb-3`} style={{ fontFamily: 'Pretendard,sans-serif' }}>강의 소개</h2>
             <p className="text-[#a6a6aa] text-[13px] leading-[1.8]" style={{ fontFamily: 'Pretendard,sans-serif' }}>{course.desc}</p>
           </section>
           {/* 학습 콘텐츠 */}
-          <section className={`rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
+          <section className={`page-card-reveal rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
             <h2 className={`${titleSize} font-bold text-white mb-3`} style={{ fontFamily: 'Pretendard,sans-serif' }}>학습 콘텐츠</h2>
             <div className="space-y-2.5">
               {modules.map((m, i) => (
@@ -537,7 +537,7 @@ function CourseDetailBody({ course, onBack, onStartLesson, mobile }: { course: C
             </div>
           </section>
           {/* 학습 목차 */}
-          <section className={`rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
+          <section className={`page-card-reveal rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
             <h2 className={`${titleSize} font-bold text-white mb-1`} style={{ fontFamily: 'Pretendard,sans-serif' }}>학습 목차</h2>
             <p className="text-[#555] text-[11px] mb-3" style={{ fontFamily: 'Pretendard,sans-serif' }}>{chapters.length}개 챕터</p>
             <div className="space-y-2">
@@ -556,7 +556,7 @@ function CourseDetailBody({ course, onBack, onStartLesson, mobile }: { course: C
           {/* Left */}
           <div className="flex-1 min-w-0 space-y-5">
             {/* 강의 소개 */}
-            <section className={`rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
+            <section className={`page-card-reveal rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
               <h2 className={`${titleSize} font-bold text-white mb-4`} style={{ fontFamily: 'Pretendard,sans-serif' }}>강의 소개</h2>
               <p className="text-[#a6a6aa] text-[14px] leading-[1.85]" style={{ fontFamily: 'Pretendard,sans-serif' }}>{course.desc}</p>
               <p className="text-[#a6a6aa] text-[14px] leading-[1.85] mt-3" style={{ fontFamily: 'Pretendard,sans-serif' }}>
@@ -564,7 +564,7 @@ function CourseDetailBody({ course, onBack, onStartLesson, mobile }: { course: C
               </p>
             </section>
             {/* 학습 콘텐츠 */}
-            <section className={`rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
+            <section className={`page-card-reveal rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
               <h2 className={`${titleSize} font-bold text-white mb-4`} style={{ fontFamily: 'Pretendard,sans-serif' }}>학습 콘텐츠</h2>
               <div className="space-y-3">
                 {modules.map((m, i) => (
@@ -589,7 +589,7 @@ function CourseDetailBody({ course, onBack, onStartLesson, mobile }: { course: C
               </div>
             </section>
             {/* 학습 목차 */}
-            <section className={`rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
+            <section className={`page-card-reveal rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] ${sectionPad}`}>
               <h2 className={`${titleSize} font-bold text-white mb-1`} style={{ fontFamily: 'Pretendard,sans-serif' }}>학습 목차</h2>
               <p className="text-[#555] text-[12px] mb-4" style={{ fontFamily: 'Pretendard,sans-serif' }}>{chapters.length}개 챕터</p>
               <div className="space-y-2">
@@ -814,7 +814,7 @@ function MobileArticleCard() {
     { icon: <Ico size={15}><path d={svgPaths.p185087f0} {...sw1('#51A2FF')}/><path d="M7.5 3.75V7.5L10 8.75" {...sw1('#51A2FF')}/></Ico>, label:'누적 학습', value:'18h', sub:'이번 달 총계', onClick:()=>toast('누적 학습',{duration:1200}) },
   ];
   return (
-    <div className="relative overflow-hidden bg-black/60 border border-white/[0.04] shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.08)]">
+    <div className="page-card-reveal relative overflow-hidden bg-black/60 border border-white/[0.04] shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.08)]">
       <div className="p-5">
         <div className="flex items-start gap-3">
           <div className="size-[52px] rounded-full overflow-hidden bg-black/60 shrink-0 relative mt-[2px]">
@@ -864,7 +864,7 @@ function MobileArticleCard() {
 // ─── Mobile home: 최근 프로젝트 카드 ──────────────────────────────────────────
 function MobileRecentProjectCard({ navigate }: { navigate: NavigateFn }) {
   return (
-    <div className="relative overflow-hidden bg-[rgba(10,15,8,0.8)] border border-white/[0.04] shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.04)]">
+    <div className="page-card-reveal relative overflow-hidden bg-[rgba(10,15,8,0.8)] border border-white/[0.04] shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.04)]">
       <div className="p-5">
         <p className="text-[20px] font-bold text-white tracking-[-1px] mb-[24px]" style={{ fontFamily:'Helvetica Neue,Noto Sans KR,sans-serif' }}>최근 프로젝트</p>
         <div className="flex items-center gap-2">
@@ -979,7 +979,7 @@ const PROJECTS: Project[] = [
 function ProjectCard({ project, onOpen }: { project: Project; onOpen?: (p: Project) => void }) {
   return (
     <button
-      className="cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
+      className="page-card-reveal cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(project) : toast(project.title, { duration: 1500 })}>
       {/* Gradient Thumbnail */}
       <div className="theme-gradient-surface relative w-full aspect-[4/2.2] flex items-center justify-center overflow-hidden" style={{ background: project.bg }}>
@@ -1125,7 +1125,7 @@ function ProjectDetailBody({ project, onBack, mobile }: { project: Project; onBa
           {activeTab === 'overview' && (
             <>
               {/* 프로젝트 소개 */}
-              <section className="rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
+              <section className="page-card-reveal rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
                 <h2 className="text-[15px] font-bold text-white mb-3" style={{ fontFamily: 'Pretendard,sans-serif' }}>프로젝트 소개</h2>
                 <p className="text-[#a6a6aa] text-[13px] leading-[1.85]" style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.desc}</p>
                 <p className="text-[#a6a6aa] text-[13px] leading-[1.85] mt-3" style={{ fontFamily: 'Pretendard,sans-serif' }}>
@@ -1133,7 +1133,7 @@ function ProjectDetailBody({ project, onBack, mobile }: { project: Project; onBa
                 </p>
               </section>
               {/* 학습 목표 */}
-              <section className="rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
+              <section className="page-card-reveal rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
                 <h2 className="text-[15px] font-bold text-white mb-4" style={{ fontFamily: 'Pretendard,sans-serif' }}>학습 목표</h2>
                 <div className="space-y-3">
                   {['실제 데이터로 문제를 정의하고 해결 방안을 기획하는 능력', `${project.tag} 관련 핵심 기술을 실습을 통해 깊이 있게 이해`, '팀 협업 과정에서 발생하는 이슈를 주도적으로 해결하는 경험', '최종 결과물을 문서화하고 발표하는 커뮤니케이션 역량'].map((goal, i) => (
@@ -1150,7 +1150,7 @@ function ProjectDetailBody({ project, onBack, mobile }: { project: Project; onBa
           )}
 
           {activeTab === 'missions' && (
-            <section className="rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
+            <section className="page-card-reveal rounded-[16px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
               <h2 className="text-[15px] font-bold text-white mb-1" style={{ fontFamily: 'Pretendard,sans-serif' }}>미션 목록</h2>
               <p className="text-[#555] text-[12px] mb-4" style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.missions.length}개 미션</p>
               <div className="space-y-2.5">
@@ -1174,7 +1174,7 @@ function ProjectDetailBody({ project, onBack, mobile }: { project: Project; onBa
         {/* Right: info card (desktop only) */}
         {!mobile && (
           <div className="w-[280px] shrink-0 sticky top-6">
-            <div className="rounded-[20px] bg-[rgba(255,255,255,0.03)] border border-white/[0.08] overflow-hidden">
+            <div className="page-card-reveal rounded-[20px] bg-[rgba(255,255,255,0.03)] border border-white/[0.08] overflow-hidden">
               <div className="theme-gradient-surface h-[120px] flex items-center justify-center" style={{ background: project.bg }}>
                 <span className="text-white/20 font-black text-[48px]" style={{ fontFamily: 'Orbitron,sans-serif' }}>PBL</span>
               </div>
@@ -1302,7 +1302,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
       <div className={`${px} ${maxW}`}>
 
         {/* ── 프로필 카드 ── */}
-        <div className="rounded-[20px] border border-white/[0.06] overflow-hidden mb-6"
+        <div className="page-card-reveal rounded-[20px] border border-white/[0.06] overflow-hidden mb-6"
           style={{ background: 'linear-gradient(146deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.01) 60%,rgba(170,255,25,0.02) 100%)' }}>
           <div className="p-5 md:p-6">
             {/* Profile row */}
@@ -1348,7 +1348,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
         </div>
 
         {/* ── 온보딩 배너 ── */}
-        <div className="theme-gradient-surface rounded-[16px] overflow-hidden mb-6 relative"
+        <div className="page-card-reveal theme-gradient-surface rounded-[16px] overflow-hidden mb-6 relative"
           style={{ background: 'linear-gradient(135deg,#005c4b,#00875a)' }}>
           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 90% 50%,#aaff19 0%,transparent 55%)' }} />
           <div className="relative flex items-center justify-between gap-4 px-5 py-4">
@@ -1379,7 +1379,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
         {/* ── 이어서 학습 + 역량 분석 ── */}
         <div className={`grid gap-4 mb-4 ${compact ? 'grid-cols-1' : 'grid-cols-2'}`}>
           {/* 이어서 학습하기 */}
-          <div className="rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
+          <div className="page-card-reveal rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-[15px] font-bold text-white" style={{ fontFamily: 'Pretendard,sans-serif' }}>이어서 학습하기</h2>
               <button className="cursor-target text-[12px] text-[#aaff19] font-semibold hover:text-[#c8ff50] transition-colors"
@@ -1409,7 +1409,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
           </div>
 
           {/* 나의 역량 분석 */}
-          <div className="rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
+          <div className="page-card-reveal rounded-[18px] bg-[rgba(255,255,255,0.02)] border border-white/[0.06] p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-[15px] font-bold text-white" style={{ fontFamily: 'Pretendard,sans-serif' }}>나의 역량 분석</h2>
               <button className="cursor-target text-[12px] text-[#aaff19] font-semibold hover:text-[#c8ff50] transition-colors"
