@@ -243,7 +243,7 @@ function CourseCard({ course, compact, onOpen }: { course: Course; compact?: boo
 
   return (
     <button
-      className="page-card-reveal cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
+      className="page-card-reveal text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(course) : toast(course.topic, { description: '강의를 시작합니다', duration: 1500 })}>
       <div className="relative h-[72px] flex items-center justify-between px-5" style={{ background: accent }}>
         <Bookmark size={18} className="text-white" />
@@ -966,7 +966,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen?: (p: Proje
   const visual = project.id === 1 ? '/project-purple.png' : project.id === 2 ? '/project-blue.png' : project.id === 3 ? '/project-green.png' : '/project-purple.png';
   return (
     <button
-      className="page-card-reveal cursor-target text-left flex flex-col md:flex-row rounded-[16px] overflow-hidden border border-white/[0.06] bg-[#19191b] hover:border-white/[0.16] transition-all duration-200 group"
+      className="page-card-reveal text-left flex flex-col md:flex-row rounded-[16px] overflow-hidden border border-white/[0.06] bg-[#19191b] hover:border-white/[0.16] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(project) : toast(project.title, { duration: 1500 })}>
       <div className="theme-gradient-surface relative w-full md:w-[58%] min-h-[220px] flex flex-col justify-between p-5 overflow-hidden" style={{ background: project.bg, backgroundImage: `url(${visual})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="flex items-center justify-between relative z-10">
