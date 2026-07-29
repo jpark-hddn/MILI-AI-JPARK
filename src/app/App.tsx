@@ -962,30 +962,30 @@ const PROJECTS: Project[] = [
 
 // ─── Project Card ─────────────────────────────────────────────────────────────
 function ProjectCard({ project, onOpen }: { project: Project; onOpen?: (p: Project) => void }) {
+  const visual = project.id === 1 ? '/project-purple.png' : project.id === 2 ? '/project-blue.png' : project.id === 3 ? '/project-green.png' : '/project-purple.png';
   return (
     <button
-      className="page-card-reveal cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
+      className="page-card-reveal cursor-target text-left flex flex-col md:flex-row rounded-[16px] overflow-hidden border border-white/[0.06] bg-[#19191b] hover:border-white/[0.16] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(project) : toast(project.title, { duration: 1500 })}>
-      {/* Gradient Thumbnail */}
-      <div className="theme-gradient-surface relative w-full aspect-[4/2.2] flex items-center justify-center overflow-hidden" style={{ background: project.bg }}>
-        <span className="absolute top-3 left-3 bg-white/20 backdrop-blur-sm text-white text-[11px] font-bold px-3 py-1 rounded-full border border-white/30"
-          style={{ fontFamily: 'Pretendard,sans-serif' }}>PBL PROJECT</span>
-        <span className="text-white/20 font-black text-[64px] leading-none select-none group-hover:scale-110 transition-transform duration-300"
-          style={{ fontFamily: 'Orbitron,sans-serif' }}>PBL</span>
+      <div className="theme-gradient-surface relative w-full md:w-[58%] min-h-[220px] flex flex-col justify-between p-5 overflow-hidden" style={{ background: project.bg, backgroundImage: `url(${visual})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="flex items-center justify-between relative z-10">
+          <span className="text-white text-[11px] font-semibold flex items-center gap-1.5" style={{ fontFamily: 'Pretendard,sans-serif' }}><span className="size-4 rounded-full border border-white flex items-center justify-center">·</span>{project.id === 2 ? 'Advanced' : 'PBL'}</span>
+          <span className="rounded-full bg-white text-[#222] text-[10px] font-semibold px-3 py-2" style={{ fontFamily: 'Pretendard,sans-serif' }}>♙ {project.id === 2 ? '1/4 모집중' : '4/4 모집 마감'}</span>
+        </div>
+        <h3 className="relative z-10 text-white font-bold text-[18px] leading-[1.35] max-w-[520px]" style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.title}</h3>
+        <div className="relative z-10 flex gap-2">
+          {['Data','AI','HCP'].map(tag => <span key={tag} className="border border-white/80 text-white text-[12px] px-3 py-1 rounded-full" style={{ fontFamily: 'Pretendard,sans-serif' }}>{tag}</span>)}
+        </div>
       </div>
-      {/* Info */}
-      <div className="p-5 flex flex-col gap-3 flex-1">
-        <h3 className="text-white font-bold text-[15px] leading-[1.4] line-clamp-2"
-          style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.title}</h3>
-        <p className="text-[#737373] text-[13px] leading-[1.6] line-clamp-3 flex-1"
-          style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.desc}</p>
-        <div className="flex items-center gap-2 flex-wrap pt-1 border-t border-white/[0.05]">
-          <span className="bg-[rgba(170,255,25,0.08)] text-[#aaff19] text-[11px] font-semibold px-2.5 py-1 rounded-[6px]"
-            style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.duration}</span>
-          <span className="bg-white/[0.05] text-[#a6a6aa] text-[11px] px-2.5 py-1 rounded-[6px]"
-            style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.hours}</span>
-          <span className="bg-white/[0.05] text-[#a6a6aa] text-[11px] px-2.5 py-1 rounded-[6px] ml-auto"
-            style={{ fontFamily: 'Pretendard,sans-serif' }}>{project.level}</span>
+      <div className="flex-1 p-5 flex flex-col justify-between min-h-[220px]">
+        <div>
+          <h4 className="text-white font-bold text-[15px] leading-[1.4] mb-3" style={{ fontFamily:'Pretendard,sans-serif' }}>{project.title}</h4>
+          <p className="text-[#737373] text-[12px] leading-[1.6] line-clamp-3" style={{ fontFamily:'Pretendard,sans-serif' }}>{project.desc}</p>
+        </div>
+        <div className="flex items-center gap-2 border-t border-white/[0.06] pt-3 mt-4">
+          <span className="bg-[rgba(170,255,25,0.1)] text-[#aaff19] text-[10px] px-2 py-1 rounded" style={{ fontFamily:'Pretendard,sans-serif' }}>{project.duration}</span>
+          <span className="bg-white/[0.06] text-[#a6a6aa] text-[10px] px-2 py-1 rounded" style={{ fontFamily:'Pretendard,sans-serif' }}>{project.hours}</span>
+          <span className="ml-auto bg-white/[0.06] text-[#a6a6aa] text-[10px] px-2 py-1 rounded" style={{ fontFamily:'Pretendard,sans-serif' }}>{project.level}</span>
         </div>
       </div>
     </button>
