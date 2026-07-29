@@ -145,7 +145,7 @@ function SidebarNav({ activeNav, navigate, onClose }: { activeNav: number; navig
 // ─── Desktop Sidebar (for VOD page) ───────────────────────────────────────────
 function VodDesktopSidebar({ activeNav, navigate, onLogoClick }: { activeNav: number; navigate: NavigateFn; onLogoClick?: () => void }) {
   return (
-    <aside className="w-[271px] h-full bg-black flex flex-col shrink-0 rounded-r-[32px] relative shadow-[0px_22px_66px_0px_rgba(0,0,0,0.46)]">
+    <aside className="w-[271px] h-full bg-black flex flex-col shrink-0 rounded-r-[32px] relative">
       <div className="absolute inset-0 rounded-r-[32px] pointer-events-none shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.04)]" />
       <div className="px-6 pt-8 pb-4"><Logo onClick={onLogoClick ?? (() => navigate(0))} /></div>
       <SidebarNav activeNav={activeNav} navigate={navigate} />
@@ -161,7 +161,7 @@ function MobileSidebar({ isOpen, onClose, activeNav, navigate }: {
   return (
     <>
       {isOpen && <div className="fixed inset-0 z-40 bg-black/60" onClick={onClose} />}
-      <aside className={['fixed top-0 left-0 z-50 h-full w-[230px] bg-black flex flex-col', 'shadow-[0px_22px_66px_0px_rgba(0,0,0,0.46)] rounded-r-[32px]', 'transition-transform duration-300 ease-out', isOpen ? 'translate-x-0' : '-translate-x-full'].join(' ')}>
+      <aside className={['fixed top-0 left-0 z-50 h-full w-[230px] bg-black flex flex-col', 'rounded-r-[32px]', 'transition-transform duration-300 ease-out', isOpen ? 'translate-x-0' : '-translate-x-full'].join(' ')}>
         <div className="absolute inset-0 rounded-r-[32px] pointer-events-none shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.04)]" />
         <div className="flex items-center justify-between px-6 pt-7 pb-2">
           <Logo onClick={() => { navigate(0); onClose(); }} />

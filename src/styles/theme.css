@@ -456,7 +456,7 @@ html.light-mode .theme-gradient-surface [class*="text-white/80"] {
 
 html.light-mode aside {
   background: rgba(250, 252, 249, 0.96) !important;
-  box-shadow: 18px 0 48px rgba(35, 43, 48, 0.08);
+  box-shadow: none !important;
 }
 
 html.light-mode svg path[fill="white"],
