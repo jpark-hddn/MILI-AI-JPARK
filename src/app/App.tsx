@@ -1494,7 +1494,9 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <PixelBlast color={mode === 'light' ? '#6f9b30' : '#AAFF19'} pixelSize={mode === 'light' ? 8 : 7} />
+        <PixelBlast variant="square" pixelSize={4} color="#AAFF19" patternScale={2} patternDensity={1}
+          enableRipples rippleSpeed={0.3} rippleThickness={0.1} rippleIntensityScale={1}
+          speed={0.5} transparent edgeFade={0.25} />
       </div>
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
       <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} onLogoClick={() => window.location.reload()} />
@@ -1717,7 +1719,9 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
       <VodDesktopSidebar activeNav={0} navigate={navigate} onLogoClick={() => window.location.reload()} />
       <main ref={viewportRef} onPointerMove={moveBackground} onPointerLeave={resetBackground} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]" data-theme-surface="home">
         <div ref={backgroundRef} className="absolute -inset-[3%] pointer-events-none transition-transform duration-700 ease-out will-change-transform" style={{ transform: 'translate3d(0, 0, 0) scale(1.04)' }}>
-          <PixelBlast color={mode === 'light' ? '#6f9b30' : '#AAFF19'} pixelSize={mode === 'light' ? 8 : 7} />
+          <PixelBlast variant="square" pixelSize={4} color="#AAFF19" patternScale={2} patternDensity={1}
+            enableRipples rippleSpeed={0.3} rippleThickness={0.1} rippleIntensityScale={1}
+            speed={0.5} transparent edgeFade={0.25} />
         </div>
         <div className={`absolute inset-0 pointer-events-none transition-colors duration-500 ${mode === 'light' ? 'bg-white/10' : 'bg-black/25'}`} />
         <div
