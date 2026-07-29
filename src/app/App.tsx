@@ -731,7 +731,7 @@ function ClassroomCurriculumPane({ course, moduleIndex, onSelect }: { course: Co
       </div>
       <div className="p-5 border-b border-white/8">
         <div className="flex justify-between text-xs text-white/45"><span>전체 진도</span><span>33%</span></div>
-        <div className="mt-2 h-1.5 rounded-full bg-white/8 overflow-hidden"><div className="h-full w-1/3 bg-[#b4ff39] rounded-full" /></div>
+        <div className="progress-track mt-2 h-1.5 rounded-full bg-white/8 overflow-hidden"><div className="h-full w-1/3 bg-[#b4ff39] rounded-full" /></div>
       </div>
       <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
         {lessons.map((lesson, i) => (
@@ -852,7 +852,7 @@ function MobileArticleCard() {
             <span className="text-[13px] font-black text-white" style={{ fontFamily:'Orbitron,sans-serif' }}>Lv. 23</span>
             <span className="text-[11px] font-bold text-white tracking-[-0.5px]" style={{ fontFamily:'Helvetica Neue,sans-serif' }}>84%</span>
           </div>
-          <div className="bg-white/10 h-[7px] rounded-full overflow-hidden">
+          <div className="progress-track bg-white/10 h-[7px] rounded-full overflow-hidden">
             <div className="h-full bg-[#AAFF19] rounded-full shadow-[0_0_14px_rgba(170,255,25,0.34)]" style={{ width:'84%' }} />
           </div>
         </div>
@@ -884,7 +884,7 @@ function MobileRecentProjectCard({ navigate }: { navigate: NavigateFn }) {
             <span className="text-[9px] text-[#8a948d] tracking-[-0.288px]" style={{ fontFamily:'Helvetica Neue,Noto Sans KR,sans-serif', fontVariationSettings:'"wght" 400' }}>진행률</span>
             <span className="text-[11px] font-bold text-white tracking-[-0.5px]" style={{ fontFamily:'Helvetica Neue,sans-serif' }}>38%</span>
           </div>
-          <div className="bg-white/10 h-[7px] rounded-full overflow-hidden">
+          <div className="progress-track bg-white/10 h-[7px] rounded-full overflow-hidden">
             <div className="h-full bg-[#AAFF19] rounded-full shadow-[0_0_14px_rgba(170,255,25,0.34)]" style={{ width:'38%' }} />
           </div>
         </div>
@@ -1323,7 +1323,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
                 {/* Level bar */}
                 <div className="mt-3 flex items-center gap-3">
                   <span className="text-[13px] font-black text-white shrink-0" style={{ fontFamily: 'Orbitron,sans-serif' }}>Lv. 23</span>
-                  <div className="flex-1 bg-white/10 h-[6px] rounded-full overflow-hidden">
+                  <div className="progress-track flex-1 bg-white/10 h-[6px] rounded-full overflow-hidden">
                     <div className="h-full bg-[#AAFF19] rounded-full shadow-[0_0_10px_rgba(170,255,25,0.4)]" style={{ width: '84%' }} />
                   </div>
                   <span className="text-[11px] font-bold text-white/70 shrink-0" style={{ fontFamily: 'Helvetica Neue,sans-serif' }}>84%</span>
@@ -1399,7 +1399,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
                 <span className="text-[#737373] text-[10px]" style={{ fontFamily: 'Pretendard,sans-serif' }}>진행률</span>
                 <span className="text-white text-[11px] font-bold" style={{ fontFamily: 'Helvetica Neue,sans-serif' }}>38%</span>
               </div>
-              <div className="bg-white/10 h-[6px] rounded-full overflow-hidden mb-3">
+              <div className="progress-track bg-white/10 h-[6px] rounded-full overflow-hidden mb-3">
                 <div className="h-full bg-[#AAFF19] rounded-full shadow-[0_0_8px_rgba(170,255,25,0.35)]" style={{ width: '38%' }} />
               </div>
               <button className="cursor-target w-full bg-[rgba(170,255,25,0.1)] hover:bg-[rgba(170,255,25,0.18)] border border-[rgba(170,255,25,0.2)] text-[#aaff19] text-[12px] font-bold py-2 rounded-[9px] transition-colors"
@@ -1691,6 +1691,7 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
     });
     progressFills.forEach((fill, i) => {
       fill.classList.add('home-progress-fill');
+      fill.parentElement?.classList.add('progress-track');
       fill.style.animationDelay = `${760 + (i * 180)}ms`;
     });
 

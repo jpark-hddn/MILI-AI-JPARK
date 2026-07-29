@@ -359,6 +359,43 @@ html.light-mode [class*="border-white"] {
   border-color: rgba(18, 24, 29, 0.13) !important;
 }
 
+html.light-mode input::placeholder,
+html.light-mode textarea::placeholder {
+  color: #778087 !important;
+  opacity: 1;
+}
+
+html.light-mode [class*="text-[#aaff19]"],
+html.light-mode [class*="text-[#b4ff39]"],
+html.light-mode [class*="text-[#AAFF19]"],
+html.light-mode [class*="text-[#B4FF39]"],
+html.light-mode aside span[style*="#B4FF39"] {
+  color: #5b9800 !important;
+}
+
+html.light-mode svg path[stroke="#B4FF39"],
+html.light-mode svg path[stroke="#AAFF19"] {
+  stroke: #5f9f00 !important;
+}
+
+html.light-mode [class*="bg-[rgba(170,255,25"] {
+  background-color: rgba(100, 164, 0, 0.12) !important;
+}
+
+html.light-mode [class*="border-[rgba(170,255,25"] {
+  border-color: rgba(91, 152, 0, 0.38) !important;
+}
+
+html.light-mode .progress-track {
+  background: #d1d8d2 !important;
+  box-shadow: inset 0 1px 2px rgba(22, 31, 25, 0.13);
+}
+
+html.light-mode .progress-track > div {
+  background: #72c600 !important;
+  box-shadow: 0 0 10px rgba(91, 174, 0, 0.24) !important;
+}
+
 html.light-mode .theme-gradient-surface,
 html.light-mode .theme-gradient-surface h1,
 html.light-mode .theme-gradient-surface h2,
@@ -430,6 +467,14 @@ html.light-mode [data-theme-surface="home"] [class*="from-[#79dffd]"] {
 html.light-mode [data-theme-surface="home"] [class*="text-[#10b4e5]"] {
   color: #087b9f !important;
   -webkit-text-fill-color: #087b9f !important;
+}
+
+html.light-mode [data-theme-surface="home"] [data-name="Article"] p[class*="text-[#aaff19]"],
+html.light-mode [data-theme-surface="home"] [data-name="Article"] p[class*="text-[#AAFF19]"],
+html.light-mode [data-theme-surface="home"] .home-reveal-panel p[class*="text-[#aaff19]"],
+html.light-mode [data-theme-surface="home"] .home-reveal-panel p[class*="text-[#AAFF19]"] {
+  color: #5b9800 !important;
+  -webkit-text-fill-color: #5b9800 !important;
 }
 
 html.light-mode aside nav span[style*="color: white"],
