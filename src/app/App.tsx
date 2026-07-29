@@ -286,8 +286,7 @@ function VodContent({ compact, onOpenCourse }: { compact?: boolean; onOpenCourse
       <div className={`${compact ? 'text-center mb-5' : 'text-center mb-8'}`}>
         <h1 className={`font-bold text-white ${compact ? 'text-[22px]' : 'text-[30px]'}`}
           style={{ fontFamily: 'Pretendard,sans-serif', letterSpacing: '-1px' }}>
-          전체 강의&nbsp;
-          <span className="text-[#aaff19]">{COURSES.length}개</span>
+          나에게 필요한 강의를 찾아보세요
         </h1>
         <p className={`mt-1.5 text-[#a6a6aa] ${compact ? 'text-[13px]' : 'text-[15px]'}`}
           style={{ fontFamily: 'Pretendard,sans-serif' }}>
