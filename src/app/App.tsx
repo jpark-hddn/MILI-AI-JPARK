@@ -373,7 +373,7 @@ function VodDesktopPage({ navigate, activeNav, openCourse }: { navigate: Navigat
 function MobileVodView({ navigate, activeNav, openCourse }: { navigate: NavigateFn; activeNav: number; openCourse: (c: Course) => void }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className="min-h-screen w-full bg-[#0c0c0d]">
+    <div className="min-h-screen w-full overflow-x-hidden overscroll-x-none bg-[#0c0c0d]">
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
       <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
       <VodContent compact onOpenCourse={openCourse} />

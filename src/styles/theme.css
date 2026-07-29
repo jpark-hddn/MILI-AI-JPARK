@@ -538,6 +538,11 @@ html.light-mode [data-theme-surface="home"] {
   background: #f2f5f1 !important;
 }
 
+@media (max-width: 1279px) {
+  html, body { overflow-x: hidden; overscroll-behavior-x: none; }
+  .mobile-home-background { position: fixed !important; inset: 0 !important; transform: none !important; }
+}
+
 html.light-mode aside nav span[style*="color: white"],
 html.light-mode aside span[style*="color: white"],
 html.light-mode aside p[style*="color: rgb(161"],
