@@ -1043,7 +1043,7 @@ function ProjectContent({ compact, onOpenProject }: { compact?: boolean; onOpenP
       {filtered.length === 0 ? (
         <div className="text-center py-16 text-[#555]" style={{ fontFamily: 'Pretendard,sans-serif', fontSize: 14 }}>검색 결과가 없습니다</div>
       ) : (
-        <div className={`grid gap-5 ${compact ? 'grid-cols-1' : 'grid-cols-2 gap-6'}`}>
+        <div className="grid grid-cols-1 gap-6">
           {filtered.map(p => <ProjectCard key={p.id} project={p} onOpen={onOpenProject} />)}
         </div>
       )}
