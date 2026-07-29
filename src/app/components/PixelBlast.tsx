@@ -12,8 +12,10 @@ export default function PixelBlast({ color = '#AAFF19', pixelSize = 7, speed = 0
     if (!ctx) return;
     let frame = 0;
     let raf = 0;
+    let lastAutoRipple = 0;
     let w = 0;
     let h = 0;
+    const touchDevice = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
     const pointer = { x: -1000, y: -1000, active: false };
     const ripples: Array<{ x: number; y: number; age: number }> = [];
     const resize = () => {
@@ -28,6 +30,12 @@ export default function PixelBlast({ color = '#AAFF19', pixelSize = 7, speed = 0
     const click = (e: MouseEvent) => { const r = canvas.getBoundingClientRect(); ripples.push({ x: e.clientX - r.left, y: e.clientY - r.top, age: 0 }); if (ripples.length > 8) ripples.shift(); };
     const draw = () => {
       frame += speed;
+      if (touchDevice) {
+        pointer.active = true;
+        pointer.x = w * (0.5 + Math.sin(frame * 0.008) * 0.34);
+        pointer.y = h * (0.5 + Math.cos(frame * 0.006) * 0.3);
+        if (frame - lastAutoRipple > 150) { ripples.push({ x: pointer.x, y: pointer.y, age: 0 }); lastAutoRipple = frame; }
+      }
       ctx.fillStyle = '#080a0b'; ctx.fillRect(0, 0, w, h);
       const cols = Math.ceil(w / pixelSize), rows = Math.ceil(h / pixelSize);
       for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
