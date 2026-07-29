@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import B from '../imports/branding-login/index';
 import TargetCursor from './components/TargetCursor';
 import { Toaster, toast } from 'sonner';
 import svgPaths from '../imports/branding-login/svg-6mc43d5pkl';
 import imgBg from '../imports/branding-login/2469702d1c965d44bc1a26e0f8da8adb8dbbaf9b.png';
 import imgProfile from '../imports/branding-login/d2b061e2b578e94cd99faba5cb07115f6b3f78b1.png';
-import { Search, ChevronDown, ChevronLeft, ChevronRight, BookOpen, Code2, List, Play, RotateCcw, CheckCircle2 } from 'lucide-react';
+import { Search, ChevronDown, ChevronLeft, ChevronRight, BookOpen, Code2, List, Play, RotateCcw, CheckCircle2, Sun, Moon } from 'lucide-react';
 
 const HOME_DESIGN_WIDTH = 1920;
 const HOME_DESIGN_HEIGHT = 1080;
@@ -16,6 +16,30 @@ const FILTERS = ['전체', '1주일', '2주일', '3주일', '4주 이상'];
 
 type Page = 'home' | 'vod' | 'course' | 'classroom' | 'project' | 'projectDetail' | 'mypage';
 type NavigateFn = (navIndex: number) => void;
+type ThemeMode = 'dark' | 'light';
+
+const ThemeContext = createContext<{ mode: ThemeMode; toggle: () => void }>({
+  mode: 'dark',
+  toggle: () => undefined,
+});
+
+function ThemeToggle({ floating = false }: { floating?: boolean }) {
+  const { mode, toggle } = useContext(ThemeContext);
+  const isLight = mode === 'light';
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={isLight ? '다크 모드로 전환' : '라이트 모드로 전환'}
+      title={isLight ? '다크 모드' : '라이트 모드'}
+      className={`cursor-target flex items-center justify-center size-10 rounded-[14px] border backdrop-blur-md transition-colors ${
+        floating ? 'fixed right-5 top-5 z-[70] shadow-xl' : ''
+      } ${isLight ? 'bg-white/85 border-black/10 text-[#24272d] hover:bg-white' : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'}`}
+    >
+      {isLight ? <Moon size={17} /> : <Sun size={17} />}
+    </button>
+  );
+}
 
 // ─── Icon primitives ─────────────────────────────────────────────────────────
 const sw  = (c: string) => ({ stroke: c, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, strokeWidth: '1.37' });
@@ -134,6 +158,7 @@ function MobileHeader({ onMenuOpen, navigate }: { onMenuOpen: () => void; naviga
         <Logo onClick={() => navigate(0)} />
       </div>
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         <button className="cursor-target relative size-9 rounded-[14px] bg-white/5 border border-white/10 flex items-center justify-center"
           onClick={() => toast('알림', { duration: 1200 })}>
           <Ico size={15}><path d={svgPaths.p1523e9d8} {...sw1('rgba(255,255,255,0.7)')}/><path d={svgPaths.p9785900} {...sw1('rgba(255,255,255,0.7)')}/></Ico>
@@ -705,6 +730,7 @@ function ClassroomDesktop({ course, moduleIndex, onSelect, onClose, navigate }: 
       <header className="h-16 shrink-0 px-5 border-b border-white/8 bg-[#0b0d10] flex items-center">
         <Logo onClick={() => navigate(0)} />
         <p className="mx-auto max-w-[60%] truncate text-sm font-semibold text-white/55">{course.title}</p>
+        <ThemeToggle />
         <button className="cursor-target px-4 py-2 rounded-xl border border-white/10 text-white/55 text-xs font-bold hover:text-white hover:bg-white/5" onClick={onClose}>× 닫기</button>
       </header>
       <main className="flex-1 min-h-0 grid grid-cols-[minmax(0,1.35fr)_minmax(360px,0.7fr)_minmax(300px,0.52fr)]">
@@ -728,6 +754,7 @@ function ClassroomMobile({ course, moduleIndex, onSelect, onClose, navigate }: {
       <header className="h-14 shrink-0 px-4 border-b border-white/8 flex items-center bg-[#0b0d10]">
         <button className="cursor-target text-white/55 text-sm font-bold" onClick={() => navigate(0)}>MILI AI</button>
         <p className="mx-4 flex-1 truncate text-xs text-white/45">{course.title}</p>
+        <ThemeToggle />
         <button className="cursor-target text-xs text-white/55" onClick={onClose}>닫기</button>
       </header>
       <main className="flex-1 min-h-0">
@@ -1448,11 +1475,12 @@ function MyPageMobileView({ navigate, activeNav }: { navigate: NavigateFn; activ
 
 // ─── Mobile home layout ───────────────────────────────────────────────────────
 function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeNav: number }) {
+  const { mode } = useContext(ThemeContext);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <div className="fixed inset-0 pointer-events-none -scale-y-100 overflow-hidden">
-        <img src={imgBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
       </div>
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
       <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
@@ -1477,8 +1505,11 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
 // share the same 271px React sidebar, while only the original home content area
 // is fitted to the remaining viewport.
 function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
+  const { mode, toggle } = useContext(ThemeContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const parallaxFrameRef = useRef(0);
   const [contentFit, setContentFit] = useState({ scale: 1, left: 0, top: 0 });
 
   useEffect(() => {
@@ -1508,6 +1539,11 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
     const root = containerRef.current;
     if (!root) return;
     const cleanups: (() => void)[] = [];
+    const exportedBackground = root.querySelector<HTMLElement>('[data-name="image 2542"]');
+    if (exportedBackground) {
+      exportedBackground.style.opacity = '0';
+      cleanups.push(() => { exportedBackground.style.opacity = ''; });
+    }
     const addClick = (el: Element, handler: () => void) => {
       el.addEventListener('click', handler);
       cleanups.push(() => el.removeEventListener('click', handler));
@@ -1554,7 +1590,16 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
 
     const headerLabels = ['알림', '설정', '프로필'];
     root.querySelectorAll<HTMLElement>('[data-name="Header"] [data-name="Button"]').forEach((btn, i) => {
-      markTarget(btn); addClick(btn, () => toast(headerLabels[i] ?? '버튼', { duration: 1200 }));
+      markTarget(btn);
+      btn.setAttribute('role', 'button');
+      btn.setAttribute('aria-label', i === 1 ? (mode === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환') : (headerLabels[i] ?? '버튼'));
+      addClick(btn, () => {
+        if (i === 1) {
+          toggle();
+          return;
+        }
+        toast(headerLabels[i] ?? '버튼', { duration: 1200 });
+      });
     });
     root.querySelectorAll<HTMLElement>('[class*="bg-[#a1a1a1]"]').forEach(btn => {
       markTarget(btn); addClick(btn, () => toast('AI 교관', { description: 'AI 교관과 질문 세션을 시작합니다', duration: 2000 }));
@@ -1618,14 +1663,35 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
         }
       });
     return () => cleanups.forEach(fn => fn());
-  }, [navigate]);
+  }, [mode, navigate, toggle]);
+
+  const moveBackground = useCallback((event: React.PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const viewport = viewportRef.current;
+    const background = backgroundRef.current;
+    if (!viewport || !background) return;
+    const rect = viewport.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * -18;
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * -12;
+    cancelAnimationFrame(parallaxFrameRef.current);
+    parallaxFrameRef.current = requestAnimationFrame(() => {
+      background.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.04)`;
+    });
+  }, []);
+
+  const resetBackground = useCallback(() => {
+    const background = backgroundRef.current;
+    if (background) background.style.transform = 'translate3d(0, 0, 0) scale(1.04)';
+  }, []);
 
   return (
     <div className="flex size-full bg-[#0c0c0d]">
       <VodDesktopSidebar activeNav={0} navigate={navigate} />
-      <main ref={viewportRef} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]">
-        <img src={imgBg} alt="" aria-hidden className="absolute inset-0 size-full object-cover pointer-events-none -scale-x-100 opacity-75" />
-        <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+      <main ref={viewportRef} onPointerMove={moveBackground} onPointerLeave={resetBackground} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]" data-theme-surface="home">
+        <div ref={backgroundRef} className="absolute -inset-[3%] pointer-events-none transition-transform duration-700 ease-out will-change-transform" style={{ transform: 'translate3d(0, 0, 0) scale(1.04)' }}>
+          <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" aria-hidden className="size-full object-cover -scale-x-100" />
+        </div>
+        <div className={`absolute inset-0 pointer-events-none transition-colors duration-500 ${mode === 'light' ? 'bg-white/10' : 'bg-black/25'}`} />
         <div
           className="absolute overflow-hidden"
           style={{
@@ -1655,6 +1721,9 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
 
 // ─── App root ─────────────────────────────────────────────────────────────────
 export default function App() {
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() =>
+    window.localStorage.getItem('mili-theme') === 'light' ? 'light' : 'dark'
+  );
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [activeNav, setActiveNav] = useState(0);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -1702,12 +1771,26 @@ export default function App() {
     setSelectedProject(null);
   }, []);
 
+  const toggleTheme = useCallback(() => {
+    setThemeMode(mode => mode === 'dark' ? 'light' : 'dark');
+  }, []);
+
+  useEffect(() => {
+    const isLight = themeMode === 'light';
+    document.documentElement.classList.toggle('light-mode', isLight);
+    document.documentElement.classList.toggle('dark', !isLight);
+    document.documentElement.dataset.theme = themeMode;
+    window.localStorage.setItem('mili-theme', themeMode);
+  }, [themeMode]);
+
   return (
-    <>
+    <ThemeContext.Provider value={{ mode: themeMode, toggle: toggleTheme }}>
       <TargetCursor spinDuration={5} hideDefaultCursor parallaxOn hoverDuration={0.3}
-        cursorColor="#ffffff" cursorColorOnTarget="#B4FF39" targetSelector=".cursor-target" />
-      <Toaster position="bottom-right" theme="dark" toastOptions={{
-        style: { background: '#1a1d21', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' },
+        cursorColor={themeMode === 'light' ? '#15191d' : '#ffffff'} cursorColorOnTarget="#8edb00" targetSelector=".cursor-target" />
+      <Toaster position="bottom-right" theme={themeMode} toastOptions={{
+        style: themeMode === 'light'
+          ? { background: '#ffffff', border: '1px solid rgba(0,0,0,0.1)', color: '#17191d' }
+          : { background: '#1a1d21', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' },
       }} />
 
       {/* Desktop (xl+): the home canvas is authored at exactly 1920 × 1080. */}
@@ -1719,6 +1802,7 @@ export default function App() {
         {currentPage === 'project'       && <ProjectDesktopPage navigate={navigate} activeNav={activeNav} openProject={openProject} />}
         {currentPage === 'projectDetail' && selectedProject && <ProjectDetailDesktopPage project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
         {currentPage === 'mypage'        && <MyPageDesktopPage navigate={navigate} activeNav={activeNav} />}
+        {currentPage !== 'home' && currentPage !== 'classroom' && <ThemeToggle floating />}
       </div>
 
       {/* Fluid tablet/mobile layout (<1280px). */}
@@ -1731,6 +1815,6 @@ export default function App() {
         {currentPage === 'projectDetail' && selectedProject && <ProjectDetailMobileView project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
         {currentPage === 'mypage'        && <MyPageMobileView navigate={navigate} activeNav={activeNav} />}
       </div>
-    </>
+    </ThemeContext.Provider>
   );
 }

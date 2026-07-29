@@ -309,3 +309,118 @@
     display: none;
   }
 }
+
+/* ─── App-wide light theme ───────────────────────────────────────────────── */
+html.light-mode {
+  color-scheme: light;
+  --background: #f1f4f0;
+  --foreground: #17191d;
+  --card: #ffffff;
+  --card-foreground: #17191d;
+  --border: rgba(16, 22, 27, 0.12);
+}
+
+html.light-mode,
+html.light-mode body,
+html.light-mode #root {
+  background: #edf1ec;
+  color: #17191d;
+}
+
+html.light-mode [class~="text-white"],
+html.light-mode [class*="text-white/"] {
+  color: #1b2025 !important;
+}
+
+html.light-mode [class*="text-[#a6a6aa]"],
+html.light-mode [class*="text-[#737373]"],
+html.light-mode [class*="text-[#555"],
+html.light-mode [class*="text-[#8"] {
+  color: #5d656d !important;
+}
+
+html.light-mode [class*="bg-[#0c0c0d]"],
+html.light-mode [class*="bg-[#0c0e11]"],
+html.light-mode [class*="bg-[#0d1014]"],
+html.light-mode [class*="bg-[#101216]"],
+html.light-mode [class*="bg-[#111316]"],
+html.light-mode [class*="bg-[#14171b]"],
+html.light-mode [class*="bg-[#0b0d10]"],
+html.light-mode [class*="bg-[#090b0e]"] {
+  background-color: #f2f5f1 !important;
+}
+
+html.light-mode [class*="bg-black"] {
+  background-color: rgba(255, 255, 255, 0.86) !important;
+}
+
+html.light-mode [class*="bg-white/"] {
+  background-color: rgba(22, 28, 33, 0.055) !important;
+}
+
+html.light-mode [class*="border-white"] {
+  border-color: rgba(18, 24, 29, 0.13) !important;
+}
+
+html.light-mode aside {
+  background: rgba(250, 252, 249, 0.96) !important;
+  box-shadow: 18px 0 48px rgba(35, 43, 48, 0.08);
+}
+
+html.light-mode svg path[fill="white"],
+html.light-mode svg path[fill="#FFFFFF"] {
+  fill: #20252a !important;
+}
+
+html.light-mode svg path[stroke="white"],
+html.light-mode svg path[stroke="#FFFFFF"],
+html.light-mode svg path[stroke="#D1D1D1"] {
+  stroke: #353b41 !important;
+}
+
+html.light-mode [data-theme-surface="home"] [data-name="Article"] > div[aria-hidden],
+html.light-mode [data-theme-surface="home"] .home-reveal-panel > div[aria-hidden] {
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+
+html.light-mode [data-theme-surface="home"] [data-name="Article"] p,
+html.light-mode [data-theme-surface="home"] .home-reveal-panel p {
+  color: #20262b !important;
+  -webkit-text-fill-color: #20262b !important;
+}
+
+html.light-mode [data-theme-surface="home"] [class*="gap-[12.149px]"] p {
+  color: #596269 !important;
+  -webkit-text-fill-color: #596269 !important;
+  opacity: 1 !important;
+}
+
+html.light-mode [data-theme-surface="home"] [class*="text-[transparent]"],
+html.light-mode [data-theme-surface="home"] [class*="from-[#79dffd]"] {
+  color: #30373d !important;
+  -webkit-text-fill-color: #30373d !important;
+  background-image: none !important;
+}
+
+html.light-mode [data-theme-surface="home"] [class*="text-[#10b4e5]"] {
+  color: #087b9f !important;
+  -webkit-text-fill-color: #087b9f !important;
+}
+
+html.light-mode aside nav span[style*="color: white"],
+html.light-mode aside span[style*="color: white"],
+html.light-mode aside p[style*="color: rgb(161"],
+html.light-mode aside p[style*="color: #a1"] {
+  color: #343b41 !important;
+}
+
+html.light-mode .home-reveal-panel:hover {
+  box-shadow: 0 28px 90px rgba(43, 51, 56, 0.18), 0 0 42px rgba(126, 194, 0, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-surface="home"] > div:first-child {
+    transition: none !important;
+    transform: scale(1.04) !important;
+  }
+}
