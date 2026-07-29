@@ -94,6 +94,19 @@ const TargetCursor = ({
 
     const cursor = cursorRef.current;
     cornersRef.current = cursor.querySelectorAll('.target-cursor-corner');
+    const getIdlePositions = () => {
+      const size = constants.cornerSize;
+      return [
+        { x: -size * 1.5, y: -size * 1.5 },
+        { x: size * 0.5, y: -size * 1.5 },
+        { x: size * 0.5, y: size * 0.5 },
+        { x: -size * 1.5, y: size * 0.5 }
+      ];
+    };
+    gsap.set(Array.from(cornersRef.current), {
+      x: index => getIdlePositions()[index].x,
+      y: index => getIdlePositions()[index].y
+    });
 
     containingBlockRef.current = getContainingBlock(cursor);
     const getOffset = () => getContainingBlockOffset(containingBlockRef.current);
@@ -299,13 +312,7 @@ const TargetCursor = ({
         if (cornersRef.current) {
           const cs = Array.from(cornersRef.current);
           gsap.killTweensOf(cs, 'x,y');
-          const { cornerSize: cs2 } = constants;
-          const positions = [
-            { x: -cs2 * 1.5, y: -cs2 * 1.5 },
-            { x: cs2 * 0.5, y: -cs2 * 1.5 },
-            { x: cs2 * 0.5, y: cs2 * 0.5 },
-            { x: -cs2 * 1.5, y: cs2 * 0.5 }
-          ];
+          const positions = getIdlePositions();
           const tl = gsap.timeline();
           cs.forEach((corner, index) => {
             tl.to(corner, { x: positions[index].x, y: positions[index].y, duration: 0.3, ease: 'power3.out' }, 0);
@@ -360,7 +367,11 @@ const TargetCursor = ({
       gsap.killTweensOf(cursor);
       gsap.set(cursor, { scale: 1, rotation: 0 });
       if (cornersRef.current) {
-        gsap.set(Array.from(cornersRef.current), { x: 0, y: 0 });
+        const positions = getIdlePositions();
+        gsap.set(Array.from(cornersRef.current), {
+          x: index => positions[index].x,
+          y: index => positions[index].y
+        });
       }
       document.body.style.cursor = originalCursor;
       isActiveRef.current = false;
