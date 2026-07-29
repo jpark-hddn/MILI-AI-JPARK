@@ -7,8 +7,10 @@ import imgBg from '../imports/branding-login/2469702d1c965d44bc1a26e0f8da8adb8db
 import imgProfile from '../imports/branding-login/d2b061e2b578e94cd99faba5cb07115f6b3f78b1.png';
 import { Search, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const DESIGN_WIDTH = 1920;
-const DESIGN_HEIGHT = 1080;
+const HOME_DESIGN_WIDTH = 1920;
+const HOME_DESIGN_HEIGHT = 1080;
+const HOME_SOURCE_SIDEBAR_WIDTH = 230;
+const HOME_CONTENT_WIDTH = HOME_DESIGN_WIDTH - HOME_SOURCE_SIDEBAR_WIDTH;
 const NAV_ITEMS = ['홈', 'VOD', '프로젝트', '커뮤니티', '역량진단', '학습 여정', '마이페이지', '서비스 소개'];
 const FILTERS = ['전체', '1주일', '2주일', '3주일', '4주 이상'];
 
@@ -1300,9 +1302,32 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
   );
 }
 
-// ─── Desktop home (scaled Figma B component) ──────────────────────────────────
-function DesktopHomeView({ scale, navigate }: { scale: number; navigate: NavigateFn }) {
+// ─── Desktop home ─────────────────────────────────────────────────────────────
+// The exported Figma home contained its own 230px sidebar. Desktop pages now
+// share the same 271px React sidebar, while only the original home content area
+// is fitted to the remaining viewport.
+function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLElement>(null);
+  const [contentScale, setContentScale] = useState({ x: 1, y: 1 });
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const update = () => {
+      const rect = viewport.getBoundingClientRect();
+      setContentScale({
+        x: rect.width / HOME_CONTENT_WIDTH,
+        y: rect.height / HOME_DESIGN_HEIGHT,
+      });
+    };
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const root = containerRef.current;
@@ -1381,8 +1406,30 @@ function DesktopHomeView({ scale, navigate }: { scale: number; navigate: Navigat
   }, [navigate]);
 
   return (
-    <div ref={containerRef} style={{ width: DESIGN_WIDTH, height: DESIGN_HEIGHT, transform: `scale(${scale})`, transformOrigin: 'center center', flexShrink: 0 }}>
-      <B />
+    <div className="flex size-full bg-[#0c0c0d]">
+      <VodDesktopSidebar activeNav={0} navigate={navigate} />
+      <main ref={viewportRef} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]">
+        <div
+          className="absolute left-0 top-0"
+          style={{
+            width: HOME_CONTENT_WIDTH,
+            height: HOME_DESIGN_HEIGHT,
+            transform: `scale(${contentScale.x}, ${contentScale.y})`,
+            transformOrigin: 'left top',
+          }}
+        >
+          <div
+            ref={containerRef}
+            style={{
+              width: HOME_DESIGN_WIDTH,
+              height: HOME_DESIGN_HEIGHT,
+              transform: `translateX(-${HOME_SOURCE_SIDEBAR_WIDTH}px)`,
+            }}
+          >
+            <B />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
@@ -1391,32 +1438,8 @@ function DesktopHomeView({ scale, navigate }: { scale: number; navigate: Navigat
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [activeNav, setActiveNav] = useState(0);
-  const [scale, setScale] = useState(1);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const viewportWidth = document.documentElement.clientWidth;
-        const viewportHeight = document.documentElement.clientHeight;
-        setScale(Math.max(0.1, Math.min(
-          viewportWidth / DESIGN_WIDTH,
-          viewportHeight / DESIGN_HEIGHT,
-        )));
-      });
-    };
-    update();
-    window.addEventListener('resize', update);
-    window.visualViewport?.addEventListener('resize', update);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('resize', update);
-      window.visualViewport?.removeEventListener('resize', update);
-    };
-  }, []);
 
   const navigate = useCallback((navIndex: number) => {
     setActiveNav(navIndex);
@@ -1460,7 +1483,7 @@ export default function App() {
 
       {/* Desktop (xl+): the home canvas is authored at exactly 1920 × 1080. */}
       <div className="hidden xl:flex w-screen h-[100dvh] max-w-full overflow-hidden bg-[#0c0c0d] items-center justify-center">
-        {currentPage === 'home'          && <DesktopHomeView scale={scale} navigate={navigate} />}
+        {currentPage === 'home'          && <DesktopHomeView navigate={navigate} />}
         {currentPage === 'vod'           && <VodDesktopPage navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
         {currentPage === 'course'        && selectedCourse  && <CourseDetailDesktopPage course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} />}
         {currentPage === 'project'       && <ProjectDesktopPage navigate={navigate} activeNav={activeNav} openProject={openProject} />}
