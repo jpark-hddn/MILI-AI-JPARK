@@ -4,7 +4,7 @@ import TargetCursor from './components/TargetCursor';
 import { Toaster, toast } from 'sonner';
 import svgPaths from '../imports/branding-login/svg-6mc43d5pkl';
 import imgBg from '../imports/branding-login/2469702d1c965d44bc1a26e0f8da8adb8dbbaf9b.png';
-import { Search, ChevronDown, ChevronLeft, ChevronRight, BookOpen, Code2, List, Play, RotateCcw, CheckCircle2, Sun, Moon } from 'lucide-react';
+import { Search, ChevronDown, ChevronLeft, ChevronRight, BookOpen, Code2, List, Play, RotateCcw, CheckCircle2, Sun, Moon, Bookmark, Users, Gauge, Clock3, Building2, BadgeCheck } from 'lucide-react';
 
 const HOME_DESIGN_WIDTH = 1920;
 const HOME_DESIGN_HEIGHT = 1080;
@@ -237,47 +237,33 @@ function getCurriculumChapters(course: Course) {
 
 // ─── Course Card ──────────────────────────────────────────────────────────────
 function CourseCard({ course, compact, onOpen }: { course: Course; compact?: boolean; onOpen?: (c: Course) => void }) {
-  const badgeStyle = course.badgeType === 'new'
-    ? 'bg-[rgba(255,80,80,0.85)] text-white'
-    : course.badgeType === 'free'
-    ? 'bg-[rgba(60,130,255,0.85)] text-white'
-    : 'bg-[rgba(170,255,25,0.9)] text-black';
+  const accent = course.badgeType === 'new' ? '#f59e0b' : course.badgeType === 'free' ? '#3867c8' : '#7c3aad';
+  const level = course.badgeType === 'new' ? 'Basic (초급)' : course.badgeType === 'free' ? 'Intermediate (중급)' : 'Advanced (고급)';
 
   return (
     <button
       className="page-card-reveal cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(course) : toast(course.topic, { description: '강의를 시작합니다', duration: 1500 })}>
-      {/* Thumbnail */}
-      <div className={`theme-gradient-surface relative w-full ${compact ? 'aspect-[4/2.8]' : 'aspect-[4/2.5]'} flex items-center justify-center overflow-hidden`}
-        style={{ background: course.bg }}>
-        {course.badge && (
-          <span className={`absolute top-2.5 left-2.5 rounded-[6px] px-[7px] py-[3px] text-[10px] font-bold ${badgeStyle}`}
-            style={{ fontFamily: 'Pretendard,sans-serif' }}>
-            {course.badge}
-          </span>
-        )}
-        <span className={`text-white font-black drop-shadow-lg group-hover:scale-105 transition-transform duration-200 ${compact ? 'text-[18px]' : 'text-[22px]'} leading-tight text-center px-3`}
-          style={{ fontFamily: 'Pretendard,sans-serif' }}>
-          {course.topic}
-        </span>
+      <div className="relative h-[72px] flex items-center justify-between px-5" style={{ background: accent }}>
+        <Bookmark size={18} className="text-white" />
+        <span className="rounded-full bg-[#111214] text-white text-[10px] px-3 py-1.5 flex items-center gap-1"><Users size={12} /> {course.enrolled}명 수강중</span>
       </div>
-      {/* Info */}
-      <div className={`flex flex-col gap-1.5 flex-1 ${compact ? 'p-3' : 'p-4'}`}>
-        <h3 className={`text-white font-semibold leading-[1.4] line-clamp-2 ${compact ? 'text-[12px]' : 'text-[13px]'}`}
-          style={{ fontFamily: 'Pretendard,sans-serif' }}>{course.title}</h3>
-        {!compact && (
-          <p className="text-[#a6a6aa] text-[11px] leading-[1.5] line-clamp-2"
-            style={{ fontFamily: 'Pretendard,sans-serif' }}>{course.desc}</p>
-        )}
-        <div className="flex items-center gap-1.5 mt-auto pt-1 flex-wrap">
+      <div className={`flex flex-col gap-3 flex-1 ${compact ? 'p-3.5' : 'p-5'}`}>
+        <h3 className={`font-semibold leading-[1.35] line-clamp-2 ${compact ? 'text-[12px]' : 'text-[15px]'} text-white`} style={{ fontFamily: 'Pretendard,sans-serif', borderLeft: `4px solid ${accent}`, paddingLeft: 12 }}>{course.title}</h3>
+        <div className="flex items-center gap-1.5 flex-wrap">
           {course.tags.map(t => (
             <span key={t} className="bg-white/[0.06] text-[#a6a6aa] text-[10px] px-[6px] py-[2px] rounded-[4px]"
               style={{ fontFamily: 'Pretendard,sans-serif' }}>{t}</span>
           ))}
         </div>
-        <div className="flex items-center justify-between">
-          <span className="text-[#555] text-[10px]" style={{ fontFamily: 'Pretendard,sans-serif' }}>{course.enrolled}명 수강</span>
-          <span className="text-[#aaff19] text-[10px] font-medium" style={{ fontFamily: 'Pretendard,sans-serif' }}>{course.duration}</span>
+        <div className="space-y-2 text-[11px] text-[#c8c8cb]" style={{ fontFamily: 'Pretendard,sans-serif' }}>
+          <div className="flex items-center gap-2"><Gauge size={15} className="text-white/45" /> 강의레벨 <strong style={{ color: accent }}>{level}</strong></div>
+          <div className="flex items-center gap-2"><Clock3 size={15} className="text-white/45" /> 이수시간 <span>15시간</span></div>
+          <div className="flex items-center gap-2"><Building2 size={15} className="text-white/45" /> 제공기관 <span>Kacademy</span></div>
+          <div className="flex items-center gap-2"><BadgeCheck size={15} className="text-white/45" /> 수료증 <span>제공</span></div>
+        </div>
+        <div className="flex justify-end mt-auto pt-1">
+          <span className="rounded-full border px-4 py-2 text-[11px] font-semibold transition-colors hover:bg-[#aaff19] hover:text-[#111214]" style={{ color:'#aaff19', borderColor:'#aaff19', fontFamily:'Pretendard,sans-serif' }}>신청하기</span>
         </div>
       </div>
     </button>
