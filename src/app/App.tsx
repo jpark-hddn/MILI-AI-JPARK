@@ -1588,6 +1588,26 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
       el.style.lineHeight = '1.3';
       el.style.paddingBottom = '3px';
     });
+    const featurePanels = [
+      root.querySelector<HTMLElement>('[data-name="Article"]'),
+      root.querySelector<HTMLElement>('[class*="h-[386.398px]"][class*="w-[451.195px]"]'),
+    ].filter((panel): panel is HTMLElement => Boolean(panel));
+    featurePanels.forEach((panel, i) => {
+      panel.classList.add('home-reveal-panel');
+      panel.style.animationDelay = `${360 + (i * 150)}ms`;
+    });
+
+    const progressFills = Array.from(root.querySelectorAll<HTMLElement>('[data-name="Italic Text"]'));
+    root.querySelectorAll<HTMLElement>('[data-name="Container"]').forEach(el => {
+      if (el.className.includes('bg-[#aaff19]') && el.className.includes('h-[7px]')) {
+        progressFills.push(el);
+      }
+    });
+    progressFills.forEach((fill, i) => {
+      fill.classList.add('home-progress-fill');
+      fill.style.animationDelay = `${760 + (i * 180)}ms`;
+    });
+
     Array.from(root.querySelectorAll<HTMLElement>('p'))
       .filter(el => ['최근 프로젝트', '김철수 상병'].includes(el.textContent?.trim() ?? ''))
       .forEach((label, i) => {
