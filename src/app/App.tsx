@@ -1503,7 +1503,7 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
           <h1 className="text-[26px] font-bold text-white tracking-[-2px] leading-[1.2]" style={{ fontFamily:'Pretendard,sans-serif' }}>
             김철수 상병님,<br />오늘의 탐사를 이어가 보세요.
           </h1>
-          <p className="mt-2 text-[#a6a6aa] text-[15px] tracking-[-0.18px]" style={{ fontFamily:'Pretendard,sans-serif' }}>
+          <p className="mt-2 text-[#a6a6aa] text-[15px] font-semibold tracking-[-0.18px]" style={{ fontFamily:'Pretendard,sans-serif' }}>
             현재 학습 단계와 새롭게 도전할 프로젝트를 확인해 보세요.
           </p>
         </div>

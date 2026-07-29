@@ -19,7 +19,7 @@ function Paragraph() {
   return (
     <div className="h-[42px] relative shrink-0 w-[665.625px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start justify-center pt-[18px] relative size-full">
-        <p className="[word-break:break-word] font-['Pretendard:Regular',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#a6a6aa] text-[15px] tracking-[-0.18px] whitespace-nowrap">현재 학습 단계와 새롭게 도전할 프로젝트를 확인해 보세요.</p>
+        <p className="[word-break:break-word] font-['Pretendard:SemiBold',sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[#a6a6aa] text-[15px] tracking-[-0.18px] whitespace-nowrap">현재 학습 단계와 새롭게 도전할 프로젝트를 확인해 보세요.</p>
       </div>
     </div>
   );
