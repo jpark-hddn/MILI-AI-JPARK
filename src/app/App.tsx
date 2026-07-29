@@ -1642,9 +1642,23 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
       card.style.animationDelay = `${180 + (i * 90)}ms`;
       addClick(card, () => toast(statLabels[i % statLabels.length], { duration: 1200 }));
     });
-    const stageLabels = ['1단계: AI 개념 이해', '2단계: 생성AI 활용', '3단계: AI 결과 개선', '4단계: 실무 적용', '최종: 인증서 발급'];
-    root.querySelectorAll<HTMLElement>('[class*="gap-[12.149px]"]').forEach((node, i) => {
-      markTarget(node);
+    const stageOrder = new Map([
+      ['1단계', 0],
+      ['2단계', 1],
+      ['3단계', 2],
+      ['4단계', 3],
+      ['최종', 4],
+    ]);
+    root.querySelectorAll<HTMLElement>('[class*="gap-[12.149px]"]').forEach(node => {
+      const stageName = Array.from(node.querySelectorAll('p'))
+        .map(label => label.textContent?.trim())
+        .find(label => label && stageOrder.has(label));
+      if (!stageName) return;
+      node.classList.remove('cursor-target');
+      node.classList.add('home-stage-reveal');
+      node.style.animationDelay = `${160 + ((stageOrder.get(stageName) ?? 0) * 180)}ms`;
+      node.style.pointerEvents = 'none';
+      node.setAttribute('aria-disabled', 'true');
       node.style.height = 'auto';
       node.style.width = 'max-content';
       node.style.minWidth = 'max-content';
@@ -1655,7 +1669,6 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
         label.style.overflow = 'visible';
         label.style.whiteSpace = 'nowrap';
       });
-      addClick(node, () => toast(stageLabels[i % stageLabels.length] ?? '단계', { duration: 1500 }));
     });
     root.querySelectorAll<HTMLElement>('[class*="from-[#79dffd]"]').forEach(el => {
       el.style.lineHeight = '1.3';
