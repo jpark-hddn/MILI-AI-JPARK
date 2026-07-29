@@ -237,36 +237,11 @@
   }
 }
 
-@keyframes home-panel-sheen {
-  0% {
-    opacity: 0;
-    transform: translateX(-115%);
-  }
-  28% {
-    opacity: 0.65;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(115%);
-  }
-}
-
 .home-reveal-panel {
   opacity: 0;
   animation: home-panel-reveal 820ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transition: box-shadow 260ms ease, border-color 260ms ease;
   will-change: transform, opacity, filter;
-}
-
-.home-reveal-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-  background: linear-gradient(112deg, transparent 24%, rgba(255, 255, 255, 0.12) 48%, transparent 72%);
-  transform: translateX(-115%);
-  animation: home-panel-sheen 1100ms cubic-bezier(0.22, 1, 0.36, 1) 820ms both;
 }
 
 .home-reveal-panel:hover {
@@ -304,10 +279,6 @@
     filter: none;
   }
 
-  .home-reveal-panel::after {
-    animation: none;
-    display: none;
-  }
 }
 
 /* ─── App-wide light theme ───────────────────────────────────────────────── */
