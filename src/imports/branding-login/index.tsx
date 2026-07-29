@@ -6,9 +6,9 @@ function Heading() {
   return (
     <div className="max-w-[880px] relative shrink-0 w-full" data-name="Heading 1">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start max-w-[inherit] relative size-full">
-        <div className="[word-break:break-word] font-['Pretendard:Bold',sans-serif] leading-[0] not-italic relative shrink-0 text-[50px] text-white tracking-[-2px] whitespace-nowrap">
+        <div className="[word-break:break-word] leading-[0] not-italic relative shrink-0 text-[50px] text-white tracking-[-2px] whitespace-nowrap" style={{ fontFamily: 'Pretendard, sans-serif', fontWeight: 700 }}>
           <p className="leading-[1.2] mb-0">김철수 상병님,</p>
-          <p className="leading-[1.2]">오늘의 탐사를 이어가 보세요.</p>
+          <p className="leading-[1.2]">탐사를 이어가 보세요.</p>
         </div>
       </div>
     </div>
@@ -19,7 +19,7 @@ function Paragraph() {
   return (
     <div className="h-[42px] relative shrink-0 w-[665.625px]" data-name="Paragraph">
       <div className="bg-clip-padding border-0 border-[transparent] border-solid content-stretch flex flex-col items-start justify-center pt-[18px] relative size-full">
-        <p className="[word-break:break-word] font-['Pretendard:SemiBold',sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[#a6a6aa] text-[15px] tracking-[-0.18px] whitespace-nowrap">현재 학습 단계와 새롭게 도전할 프로젝트를 확인해 보세요.</p>
+        <p className="[word-break:break-word] font-semibold leading-[24px] not-italic relative shrink-0 text-[#a6a6aa] text-[15px] tracking-[-0.18px] whitespace-nowrap" style={{ fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>현재 학습 단계와 새롭게 도전할 프로젝트를 확인해 보세요.</p>
       </div>
     </div>
   );
