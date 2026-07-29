@@ -490,10 +490,10 @@ const PixelBlast = ({
         const { fx, fy, w, h } = mapToPixels(e);
         touch.addTouch({ x: fx / w, y: fy / h });
       };
-      renderer.domElement.addEventListener('pointerdown', onPointerDown, {
+      window.addEventListener('pointerdown', onPointerDown, {
         passive: true
       });
-      renderer.domElement.addEventListener('pointermove', onPointerMove, {
+      window.addEventListener('pointermove', onPointerMove, {
         passive: true
       });
       let raf = 0;
@@ -533,7 +533,9 @@ const PixelBlast = ({
         timeOffset,
         composer,
         touch,
-        liquidEffect
+        liquidEffect,
+        onPointerDown,
+        onPointerMove
       };
     } else {
       const t = threeRef.current;
@@ -560,9 +562,10 @@ const PixelBlast = ({
     }
     prevConfigRef.current = cfg;
     return () => {
-      if (threeRef.current && mustReinit) return;
       if (!threeRef.current) return;
       const t = threeRef.current;
+      window.removeEventListener('pointerdown', t.onPointerDown);
+      window.removeEventListener('pointermove', t.onPointerMove);
       t.resizeObserver?.disconnect();
       cancelAnimationFrame(t.raf);
       t.quad?.geometry.dispose();
@@ -607,4 +610,3 @@ const PixelBlast = ({
 };
 
 export default PixelBlast;
-
