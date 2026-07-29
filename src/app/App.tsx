@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import B from '../imports/branding-login/index';
 import TargetCursor from './components/TargetCursor';
+import PixelBlast from './components/PixelBlast';
+import './components/PixelBlast.css';
 import { Toaster, toast } from 'sonner';
 import svgPaths from '../imports/branding-login/svg-6mc43d5pkl';
-import imgBg from '../imports/branding-login/2469702d1c965d44bc1a26e0f8da8adb8dbbaf9b.png';
 import { Search, ChevronDown, ChevronLeft, ChevronRight, BookOpen, Code2, List, Play, RotateCcw, CheckCircle2, Sun, Moon, Bookmark, Users, Gauge, Clock3, Building2, BadgeCheck } from 'lucide-react';
 
 const HOME_DESIGN_WIDTH = 1920;
@@ -1492,8 +1493,8 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
-      <div className="fixed inset-0 pointer-events-none -scale-y-100 overflow-hidden">
-        <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" className="home-background-fade absolute inset-0 w-full h-full object-cover" />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <PixelBlast color={mode === 'light' ? '#6f9b30' : '#AAFF19'} pixelSize={mode === 'light' ? 8 : 7} />
       </div>
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
       <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} onLogoClick={() => window.location.reload()} />
@@ -1716,7 +1717,7 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
       <VodDesktopSidebar activeNav={0} navigate={navigate} onLogoClick={() => window.location.reload()} />
       <main ref={viewportRef} onPointerMove={moveBackground} onPointerLeave={resetBackground} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]" data-theme-surface="home">
         <div ref={backgroundRef} className="absolute -inset-[3%] pointer-events-none transition-transform duration-700 ease-out will-change-transform" style={{ transform: 'translate3d(0, 0, 0) scale(1.04)' }}>
-          <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" aria-hidden className="home-background-fade size-full object-cover -scale-x-100" />
+          <PixelBlast color={mode === 'light' ? '#6f9b30' : '#AAFF19'} pixelSize={mode === 'light' ? 8 : 7} />
         </div>
         <div className={`absolute inset-0 pointer-events-none transition-colors duration-500 ${mode === 'light' ? 'bg-white/10' : 'bg-black/25'}`} />
         <div
