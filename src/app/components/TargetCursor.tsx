@@ -158,8 +158,25 @@ const TargetCursor = ({
 
     tickerFnRef.current = tickerFn;
 
-    const moveHandler = (e: MouseEvent) => moveCursor(e.clientX, e.clientY);
+    const isPointerStillOnTarget = (x: number, y: number) => {
+      if (!activeTarget || !activeTarget.isConnected) return false;
+      const elementUnderMouse = document.elementFromPoint(x, y);
+      return Boolean(elementUnderMouse && (elementUnderMouse === activeTarget || elementUnderMouse.closest(targetSelector) === activeTarget));
+    };
+
+    const moveHandler = (e: MouseEvent) => {
+      moveCursor(e.clientX, e.clientY);
+      if (activeTarget && !isPointerStillOnTarget(e.clientX, e.clientY)) currentLeaveHandler?.();
+    };
     window.addEventListener('mousemove', moveHandler);
+
+    const clickHandler = () => currentLeaveHandler?.();
+    window.addEventListener('click', clickHandler);
+
+    const targetObserver = new MutationObserver(() => {
+      if (activeTarget && !activeTarget.isConnected) currentLeaveHandler?.();
+    });
+    targetObserver.observe(document.body, { childList: true, subtree: true });
 
     const scrollHandler = () => {
       if (!activeTarget || !cursorRef.current) return;
@@ -319,11 +336,13 @@ const TargetCursor = ({
     return () => {
       if (tickerFnRef.current) gsap.ticker.remove(tickerFnRef.current);
       window.removeEventListener('mousemove', moveHandler);
+      window.removeEventListener('click', clickHandler);
       window.removeEventListener('mouseover', enterHandler as EventListener);
       window.removeEventListener('scroll', scrollHandler);
       window.removeEventListener('resize', resizeHandler);
       window.removeEventListener('mousedown', mouseDownHandler);
       window.removeEventListener('mouseup', mouseUpHandler);
+      targetObserver.disconnect();
       if (activeTarget) cleanupTarget(activeTarget);
       spinTl.current?.kill();
       gsap.killTweensOf(cursor);
