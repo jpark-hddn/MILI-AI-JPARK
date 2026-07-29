@@ -142,11 +142,11 @@ function SidebarNav({ activeNav, navigate, onClose }: { activeNav: number; navig
 }
 
 // ─── Desktop Sidebar (for VOD page) ───────────────────────────────────────────
-function VodDesktopSidebar({ activeNav, navigate }: { activeNav: number; navigate: NavigateFn }) {
+function VodDesktopSidebar({ activeNav, navigate, onLogoClick }: { activeNav: number; navigate: NavigateFn; onLogoClick?: () => void }) {
   return (
     <aside className="w-[271px] h-full bg-black flex flex-col shrink-0 rounded-r-[32px] relative shadow-[0px_22px_66px_0px_rgba(0,0,0,0.46)]">
       <div className="absolute inset-0 rounded-r-[32px] pointer-events-none shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.04)]" />
-      <div className="px-6 pt-8 pb-4"><Logo onClick={() => navigate(0)} /></div>
+      <div className="px-6 pt-8 pb-4"><Logo onClick={onLogoClick ?? (() => navigate(0))} /></div>
       <SidebarNav activeNav={activeNav} navigate={navigate} />
       <AiCoachCard />
     </aside>
@@ -176,14 +176,14 @@ function MobileSidebar({ isOpen, onClose, activeNav, navigate }: {
 }
 
 // ─── Mobile Header ────────────────────────────────────────────────────────────
-function MobileHeader({ onMenuOpen, navigate }: { onMenuOpen: () => void; navigate: NavigateFn }) {
+function MobileHeader({ onMenuOpen, navigate, onLogoClick }: { onMenuOpen: () => void; navigate: NavigateFn; onLogoClick?: () => void }) {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-[#0c0c0d]/80 backdrop-blur-md border-b border-white/[0.06]">
       <div className="flex items-center gap-3">
         <button className="cursor-target p-1.5 rounded-lg text-white/60 hover:text-white" onClick={onMenuOpen}>
           <svg viewBox="0 0 18 14" fill="none" width={20} height={16}><path d="M1 1H17M1 7H17M1 13H17" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
         </button>
-        <Logo onClick={() => navigate(0)} />
+        <Logo onClick={onLogoClick ?? (() => navigate(0))} />
       </div>
       <div className="flex items-center gap-2">
         <ThemeToggle />
@@ -1511,7 +1511,7 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
         <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
       </div>
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
-      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} onLogoClick={() => window.location.reload()} />
       <main className="relative px-4 pt-10 pb-10 space-y-4">
         <div className="mb-8">
           <h1 className="text-[26px] font-bold text-white tracking-[-2px] leading-[1.2]" style={{ fontFamily:'Pretendard,sans-serif' }}>
@@ -1728,7 +1728,7 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
 
   return (
     <div className="flex size-full bg-[#0c0c0d]">
-      <VodDesktopSidebar activeNav={0} navigate={navigate} />
+      <VodDesktopSidebar activeNav={0} navigate={navigate} onLogoClick={() => window.location.reload()} />
       <main ref={viewportRef} onPointerMove={moveBackground} onPointerLeave={resetBackground} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]" data-theme-surface="home">
         <div ref={backgroundRef} className="absolute -inset-[3%] pointer-events-none transition-transform duration-700 ease-out will-change-transform" style={{ transform: 'translate3d(0, 0, 0) scale(1.04)' }}>
           <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" aria-hidden className="size-full object-cover -scale-x-100" />
