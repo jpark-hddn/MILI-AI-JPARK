@@ -1493,10 +1493,10 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      <div className="mobile-home-background fixed inset-0 pointer-events-none overflow-hidden">
         <PixelBlast variant="square" pixelSize={4} color="#AAFF19" patternScale={2} patternDensity={1}
           enableRipples rippleSpeed={0.3} rippleThickness={0.1} rippleIntensityScale={1}
-          speed={0.5} transparent edgeFade={0} />
+          speed={0.5} transparent edgeFade={0} autoPauseOffscreen={false} />
       </div>
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
       <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} onLogoClick={() => window.location.reload()} />
