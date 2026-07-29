@@ -5,7 +5,7 @@ import { Toaster, toast } from 'sonner';
 import svgPaths from '../imports/branding-login/svg-6mc43d5pkl';
 import imgBg from '../imports/branding-login/2469702d1c965d44bc1a26e0f8da8adb8dbbaf9b.png';
 import imgProfile from '../imports/branding-login/d2b061e2b578e94cd99faba5cb07115f6b3f78b1.png';
-import { Search, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ChevronDown, ChevronLeft, ChevronRight, BookOpen, Code2, List, Play, RotateCcw, CheckCircle2 } from 'lucide-react';
 
 const HOME_DESIGN_WIDTH = 1920;
 const HOME_DESIGN_HEIGHT = 1080;
@@ -14,7 +14,7 @@ const HOME_CONTENT_WIDTH = HOME_DESIGN_WIDTH - HOME_SOURCE_SIDEBAR_WIDTH;
 const NAV_ITEMS = ['홈', 'VOD', '프로젝트', '커뮤니티', '역량진단', '학습 여정', '마이페이지', '서비스 소개'];
 const FILTERS = ['전체', '1주일', '2주일', '3주일', '4주 이상'];
 
-type Page = 'home' | 'vod' | 'course' | 'project' | 'projectDetail' | 'mypage';
+type Page = 'home' | 'vod' | 'course' | 'classroom' | 'project' | 'projectDetail' | 'mypage';
 type NavigateFn = (navIndex: number) => void;
 
 // ─── Icon primitives ─────────────────────────────────────────────────────────
@@ -23,12 +23,18 @@ const sw1 = (c: string) => ({ stroke: c, strokeLinecap: 'round' as const, stroke
 function Ico({ size = 16, children }: { size?: number; children: React.ReactNode }) {
   return <svg viewBox={`0 0 ${size} ${size}`} fill="none" style={{ width: size, height: size, flexShrink: 0 }}>{children}</svg>;
 }
-function Logo() {
-  return (
+function Logo({ onClick }: { onClick?: () => void }) {
+  const mark = (
     <svg viewBox="0 0 111.999 40.538" fill="none" style={{ height: '40.538px', width: '111.999px', flexShrink: 0 }}>
       {[svgPaths.p3b1b4600, svgPaths.p2f19c00, svgPaths.p24c880, svgPaths.p23163e00, svgPaths.p35a2b6b0]
         .map((d, i) => <path key={i} d={d} fill="white" />)}
     </svg>
+  );
+  if (!onClick) return mark;
+  return (
+    <button type="button" className="cursor-target rounded-lg focus-visible:outline-2 focus-visible:outline-[#b4ff39]" onClick={onClick} aria-label="홈으로 이동">
+      {mark}
+    </button>
   );
 }
 const navIconFns: ((c: string) => React.ReactNode)[] = [
@@ -88,7 +94,7 @@ function VodDesktopSidebar({ activeNav, navigate }: { activeNav: number; navigat
   return (
     <aside className="w-[271px] h-full bg-black flex flex-col shrink-0 rounded-r-[32px] relative shadow-[0px_22px_66px_0px_rgba(0,0,0,0.46)]">
       <div className="absolute inset-0 rounded-r-[32px] pointer-events-none shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.04)]" />
-      <div className="px-6 pt-8 pb-4"><Logo /></div>
+      <div className="px-6 pt-8 pb-4"><Logo onClick={() => navigate(0)} /></div>
       <SidebarNav activeNav={activeNav} navigate={navigate} />
       <AiCoachCard />
     </aside>
@@ -105,7 +111,7 @@ function MobileSidebar({ isOpen, onClose, activeNav, navigate }: {
       <aside className={['fixed top-0 left-0 z-50 h-full w-[230px] bg-black flex flex-col', 'shadow-[0px_22px_66px_0px_rgba(0,0,0,0.46)] rounded-r-[32px]', 'transition-transform duration-300 ease-out', isOpen ? 'translate-x-0' : '-translate-x-full'].join(' ')}>
         <div className="absolute inset-0 rounded-r-[32px] pointer-events-none shadow-[inset_0px_1px_0px_0px_rgba(255,255,255,0.04)]" />
         <div className="flex items-center justify-between px-6 pt-7 pb-2">
-          <Logo />
+          <Logo onClick={() => { navigate(0); onClose(); }} />
           <button className="cursor-target text-white/40 hover:text-white p-1 rounded-lg" onClick={onClose}>
             <svg viewBox="0 0 24 24" fill="none" width={16} height={16}><path d="M18 6L6 18M6 6l12 12" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
           </button>
@@ -118,14 +124,14 @@ function MobileSidebar({ isOpen, onClose, activeNav, navigate }: {
 }
 
 // ─── Mobile Header ────────────────────────────────────────────────────────────
-function MobileHeader({ onMenuOpen }: { onMenuOpen: () => void }) {
+function MobileHeader({ onMenuOpen, navigate }: { onMenuOpen: () => void; navigate: NavigateFn }) {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-[#0c0c0d]/80 backdrop-blur-md border-b border-white/[0.06]">
       <div className="flex items-center gap-3">
         <button className="cursor-target p-1.5 rounded-lg text-white/60 hover:text-white" onClick={onMenuOpen}>
           <svg viewBox="0 0 18 14" fill="none" width={20} height={16}><path d="M1 1H17M1 7H17M1 13H17" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
         </button>
-        <Logo />
+        <Logo onClick={() => navigate(0)} />
       </div>
       <div className="flex items-center gap-2">
         <button className="cursor-target relative size-9 rounded-[14px] bg-white/5 border border-white/10 flex items-center justify-center"
@@ -330,7 +336,7 @@ function MobileVodView({ navigate, activeNav, openCourse }: { navigate: Navigate
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
-      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} />
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
       <VodContent compact onOpenCourse={openCourse} />
     </div>
   );
@@ -380,7 +386,7 @@ function CourseInfoCard({ course }: { course: Course }) {
   );
 }
 
-function CourseDetailBody({ course, onBack, mobile }: { course: Course; onBack: () => void; mobile?: boolean }) {
+function CourseDetailBody({ course, onBack, onStartLesson, mobile }: { course: Course; onBack: () => void; onStartLesson: (moduleIndex: number) => void; mobile?: boolean }) {
   const [openChapter, setOpenChapter] = useState<number | null>(null);
   const chapters = getCurriculumChapters(course);
   const modules = [
@@ -470,7 +476,7 @@ function CourseDetailBody({ course, onBack, mobile }: { course: Course; onBack: 
                   <p className="text-[#d1d1d1] text-[12px] flex-1 line-clamp-1" style={{ fontFamily: 'Pretendard,sans-serif' }}>{m.title}</p>
                   <button className="cursor-target bg-[rgba(170,255,25,0.1)] hover:bg-[rgba(170,255,25,0.18)] text-[#aaff19] text-[10px] font-semibold px-2.5 py-[4px] rounded-[6px] shrink-0 transition-colors"
                     style={{ fontFamily: 'Pretendard,sans-serif' }}
-                    onClick={() => toast('강의 시작', { description: m.title, duration: 1500 })}>
+                    onClick={() => onStartLesson(i)}>
                     시작
                   </button>
                 </div>
@@ -521,7 +527,7 @@ function CourseDetailBody({ course, onBack, mobile }: { course: Course; onBack: 
                       <span className="text-[#555] text-[11px]" style={{ fontFamily: 'Pretendard,sans-serif' }}>{m.duration}</span>
                       <button className="cursor-target bg-[rgba(170,255,25,0.08)] hover:bg-[rgba(170,255,25,0.18)] text-[#aaff19] text-[11px] font-semibold px-3 py-[6px] rounded-[8px] transition-colors"
                         style={{ fontFamily: 'Pretendard,sans-serif' }}
-                        onClick={() => toast('강의 시작', { description: m.title, duration: 1500 })}>
+                        onClick={() => onStartLesson(i)}>
                         강의 시작
                       </button>
                     </div>
@@ -558,24 +564,188 @@ function CourseDetailBody({ course, onBack, mobile }: { course: Course; onBack: 
   );
 }
 
-function CourseDetailDesktopPage({ course, navigate, activeNav, goBack }: { course: Course; navigate: NavigateFn; activeNav: number; goBack: () => void }) {
+function CourseDetailDesktopPage({ course, navigate, activeNav, goBack, onStartLesson }: { course: Course; navigate: NavigateFn; activeNav: number; goBack: () => void; onStartLesson: (moduleIndex: number) => void }) {
   return (
     <div className="flex w-full h-full bg-[#0c0c0d]">
       <VodDesktopSidebar activeNav={activeNav} navigate={navigate} />
       <main className="flex-1 overflow-y-auto">
-        <CourseDetailBody course={course} onBack={goBack} />
+        <CourseDetailBody course={course} onBack={goBack} onStartLesson={onStartLesson} />
       </main>
     </div>
   );
 }
 
-function CourseDetailMobileView({ course, navigate, activeNav, goBack }: { course: Course; navigate: NavigateFn; activeNav: number; goBack: () => void }) {
+function CourseDetailMobileView({ course, navigate, activeNav, goBack, onStartLesson }: { course: Course; navigate: NavigateFn; activeNav: number; goBack: () => void; onStartLesson: (moduleIndex: number) => void }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
-      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} />
-      <CourseDetailBody course={course} onBack={goBack} mobile />
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
+      <CourseDetailBody course={course} onBack={goBack} onStartLesson={onStartLesson} mobile />
+    </div>
+  );
+}
+
+// ─── Three-pane classroom ─────────────────────────────────────────────────────
+const starterCode = `# MILI AI 실습
+# 실행 버튼을 눌러 결과를 확인하세요.
+
+name = "김철수 상병"
+topic = "생성형 AI 활용"
+
+print(f"{name}님의 {topic} 학습을 시작합니다.")`;
+
+function ClassroomLessonPane({ course, moduleIndex }: { course: Course; moduleIndex: number }) {
+  const lessons = [
+    course.title,
+    `${course.topic} 핵심 기능 심화 실습`,
+    '실전 프로젝트 적용 가이드',
+  ];
+  return (
+    <section className="h-full min-h-0 flex flex-col bg-[#111316]">
+      <div className="flex-1 min-h-0 flex items-center justify-center relative overflow-hidden bg-[radial-gradient(circle_at_50%_42%,rgba(180,255,57,0.08),transparent_34%),#15181c]">
+        <div className="absolute inset-0 opacity-30" style={{ background: course.bg }} />
+        <div className="relative text-center px-8 max-w-[540px]">
+          <div className="mx-auto size-20 rounded-full border border-[#b4ff39]/30 bg-black/50 flex items-center justify-center shadow-[0_0_50px_rgba(180,255,57,0.12)]">
+            <Play size={30} fill="#b4ff39" className="text-[#b4ff39] ml-1" />
+          </div>
+          <p className="mt-6 text-white text-xl font-bold leading-snug">{lessons[moduleIndex] ?? lessons[0]}</p>
+          <p className="mt-2 text-white/40 text-sm">학습 영상을 선택하면 이 영역에서 재생됩니다.</p>
+        </div>
+      </div>
+      <div className="h-[32%] min-h-[180px] border-t border-white/8 p-6 overflow-y-auto bg-[#0d0f12]">
+        <span className="text-[11px] font-bold tracking-[0.18em] text-[#b4ff39]">MISSION {moduleIndex + 1}</span>
+        <h2 className="mt-2 text-white text-xl font-bold">오늘의 학습 미션</h2>
+        <p className="mt-3 text-[#969aa2] text-sm leading-7">
+          제공된 예제 코드를 실행하고 결과를 확인해 보세요. 코드를 직접 수정한 뒤 다시 실행하면
+          생성형 AI 활용 흐름을 단계별로 익힐 수 있습니다.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function ClassroomCodePane() {
+  const [code, setCode] = useState(starterCode);
+  const [output, setOutput] = useState('실행 버튼을 누르면 결과가 여기에 표시됩니다.');
+  const run = () => {
+    setOutput('김철수 상병님의 생성형 AI 활용 학습을 시작합니다.\\n\\n✓ 코드가 정상적으로 실행되었습니다.');
+    toast.success('실습 실행 완료');
+  };
+  return (
+    <section className="h-full min-h-0 flex flex-col bg-[#0d1014] border-x border-white/8">
+      <div className="h-14 px-4 flex items-center justify-between border-b border-white/8 bg-[#14171b]">
+        <div className="flex items-center gap-2">
+          <span className="px-3 py-1.5 rounded-lg bg-[#b4ff39]/10 border border-[#b4ff39]/30 text-[#b4ff39] text-xs font-bold">Python</span>
+          <span className="px-3 py-1.5 rounded-lg text-white/35 text-xs font-semibold">SQL</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="cursor-target p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5" onClick={() => setCode(starterCode)} aria-label="코드 초기화">
+            <RotateCcw size={15} />
+          </button>
+          <button className="cursor-target flex items-center gap-2 px-4 py-2 rounded-lg bg-[#b4ff39] text-black text-xs font-black hover:bg-[#c8ff50]" onClick={run}>
+            <Play size={13} fill="currentColor" /> 실행
+          </button>
+        </div>
+      </div>
+      <textarea
+        aria-label="Python 실습 코드"
+        value={code}
+        onChange={e => setCode(e.target.value)}
+        spellCheck={false}
+        className="flex-1 min-h-0 resize-none bg-[#0d1014] text-[#c8d1dc] font-mono text-sm leading-7 p-5 outline-none"
+      />
+      <div className="h-[28%] min-h-[140px] border-t border-white/8 bg-[#090b0e] p-4 overflow-auto">
+        <p className="text-[11px] font-bold text-white/35 mb-3">실행 결과</p>
+        <pre className="text-xs leading-6 whitespace-pre-wrap text-[#b4ff39]/80 font-mono">{output}</pre>
+      </div>
+    </section>
+  );
+}
+
+function ClassroomCurriculumPane({ course, moduleIndex, onSelect }: { course: Course; moduleIndex: number; onSelect: (index: number) => void }) {
+  const lessons = [
+    course.title,
+    `${course.topic} 핵심 기능 심화 실습`,
+    '실전 프로젝트 적용 가이드',
+  ];
+  return (
+    <section className="h-full min-h-0 flex flex-col bg-[#101216]">
+      <div className="h-14 px-5 flex items-center border-b border-white/8">
+        <List size={16} className="text-[#b4ff39]" />
+        <h2 className="ml-2 text-white text-sm font-bold">학습 목차</h2>
+        <span className="ml-auto text-white/30 text-xs">{moduleIndex + 1} / {lessons.length}</span>
+      </div>
+      <div className="p-5 border-b border-white/8">
+        <div className="flex justify-between text-xs text-white/45"><span>전체 진도</span><span>33%</span></div>
+        <div className="mt-2 h-1.5 rounded-full bg-white/8 overflow-hidden"><div className="h-full w-1/3 bg-[#b4ff39] rounded-full" /></div>
+      </div>
+      <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
+        {lessons.map((lesson, i) => (
+          <button key={lesson} onClick={() => onSelect(i)}
+            className={`cursor-target w-full text-left p-4 rounded-xl border transition-colors ${moduleIndex === i ? 'bg-[#b4ff39]/8 border-[#b4ff39]/25' : 'bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.04]'}`}>
+            <div className="flex items-start gap-3">
+              <span className={`size-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${moduleIndex === i ? 'bg-[#b4ff39] text-black' : 'bg-white/8 text-white/40'}`}>{i + 1}</span>
+              <div className="min-w-0">
+                <p className={`text-xs leading-5 font-semibold ${moduleIndex === i ? 'text-white' : 'text-white/60'}`}>{lesson}</p>
+                <p className="mt-1 text-[10px] text-white/30">{i === 0 ? '15분' : i === 1 ? '20분' : '18분'} · 영상 + 실습</p>
+              </div>
+              {i < moduleIndex && <CheckCircle2 size={14} className="ml-auto shrink-0 text-[#b4ff39]" />}
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ClassroomDesktop({ course, moduleIndex, onSelect, onClose, navigate }: { course: Course; moduleIndex: number; onSelect: (index: number) => void; onClose: () => void; navigate: NavigateFn }) {
+  return (
+    <div className="size-full flex flex-col bg-[#0c0e11] text-white">
+      <header className="h-16 shrink-0 px-5 border-b border-white/8 bg-[#0b0d10] flex items-center">
+        <Logo onClick={() => navigate(0)} />
+        <p className="mx-auto max-w-[60%] truncate text-sm font-semibold text-white/55">{course.title}</p>
+        <button className="cursor-target px-4 py-2 rounded-xl border border-white/10 text-white/55 text-xs font-bold hover:text-white hover:bg-white/5" onClick={onClose}>× 닫기</button>
+      </header>
+      <main className="flex-1 min-h-0 grid grid-cols-[minmax(0,1.35fr)_minmax(360px,0.7fr)_minmax(300px,0.52fr)]">
+        <ClassroomLessonPane course={course} moduleIndex={moduleIndex} />
+        <ClassroomCodePane />
+        <ClassroomCurriculumPane course={course} moduleIndex={moduleIndex} onSelect={onSelect} />
+      </main>
+    </div>
+  );
+}
+
+function ClassroomMobile({ course, moduleIndex, onSelect, onClose, navigate }: { course: Course; moduleIndex: number; onSelect: (index: number) => void; onClose: () => void; navigate: NavigateFn }) {
+  const [tab, setTab] = useState<'lesson' | 'code' | 'curriculum'>('lesson');
+  const tabs = [
+    { id: 'lesson' as const, label: '강의', icon: BookOpen },
+    { id: 'code' as const, label: '실습', icon: Code2 },
+    { id: 'curriculum' as const, label: '목차', icon: List },
+  ];
+  return (
+    <div className="h-[100dvh] flex flex-col bg-[#0c0e11] text-white overflow-hidden">
+      <header className="h-14 shrink-0 px-4 border-b border-white/8 flex items-center bg-[#0b0d10]">
+        <button className="cursor-target text-white/55 text-sm font-bold" onClick={() => navigate(0)}>MILI AI</button>
+        <p className="mx-4 flex-1 truncate text-xs text-white/45">{course.title}</p>
+        <button className="cursor-target text-xs text-white/55" onClick={onClose}>닫기</button>
+      </header>
+      <main className="flex-1 min-h-0">
+        {tab === 'lesson' && <ClassroomLessonPane course={course} moduleIndex={moduleIndex} />}
+        {tab === 'code' && <ClassroomCodePane />}
+        {tab === 'curriculum' && <ClassroomCurriculumPane course={course} moduleIndex={moduleIndex} onSelect={onSelect} />}
+      </main>
+      <nav className="h-[72px] shrink-0 grid grid-cols-3 border-t border-white/10 bg-[#0b0d10] pb-[env(safe-area-inset-bottom)]">
+        {tabs.map(item => {
+          const Icon = item.icon;
+          const active = tab === item.id;
+          return (
+            <button key={item.id} onClick={() => setTab(item.id)} className={`cursor-target flex flex-col items-center justify-center gap-1 text-[11px] font-bold ${active ? 'text-[#b4ff39]' : 'text-white/35'}`}>
+              <Icon size={19} /><span>{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
     </div>
   );
 }
@@ -1023,7 +1193,7 @@ function MobileProjectView({ navigate, activeNav, openProject }: { navigate: Nav
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
-      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} />
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
       <ProjectContent compact onOpenProject={openProject} />
     </div>
   );
@@ -1034,7 +1204,7 @@ function ProjectDetailMobileView({ project, navigate, activeNav, goBack }: { pro
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
-      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} />
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
       <ProjectDetailBody project={project} onBack={goBack} mobile />
     </div>
   );
@@ -1270,7 +1440,7 @@ function MyPageMobileView({ navigate, activeNav }: { navigate: NavigateFn; activ
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
-      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} />
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
       <MyPageContent compact navigate={navigate} />
     </div>
   );
@@ -1285,7 +1455,7 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
         <img src={imgBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
       </div>
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
-      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} />
+      <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} />
       <main className="relative px-4 pt-10 pb-10 space-y-4">
         <div className="mb-8">
           <h1 className="text-[26px] font-bold text-white tracking-[-2px] leading-[1.2]" style={{ fontFamily:'Pretendard,sans-serif' }}>
@@ -1389,19 +1559,39 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
     });
     const statLabels = ['연속 학습', '탐사 배지', '완료 미션', '누적 학습'];
     root.querySelectorAll<HTMLElement>('[class*="flex-[1_0_0]"][class*="rounded-[14px]"]').forEach((card, i) => {
-      markTarget(card); addClick(card, () => toast(statLabels[i % statLabels.length], { duration: 1200 }));
+      markTarget(card);
+      card.classList.add('home-reveal-card');
+      card.style.animationDelay = `${180 + (i * 90)}ms`;
+      addClick(card, () => toast(statLabels[i % statLabels.length], { duration: 1200 }));
     });
     const stageLabels = ['1단계: AI 개념 이해', '2단계: 생성AI 활용', '3단계: AI 결과 개선', '4단계: 실무 적용', '최종: 인증서 발급'];
     root.querySelectorAll<HTMLElement>('[class*="gap-[12.149px]"]').forEach((node, i) => {
       markTarget(node);
       node.style.height = 'auto';
+      node.style.width = 'max-content';
+      node.style.minWidth = 'max-content';
       node.style.overflow = 'visible';
+      node.querySelectorAll<HTMLElement>('p').forEach(label => {
+        label.style.lineHeight = '1.35';
+        label.style.paddingBottom = '4px';
+        label.style.overflow = 'visible';
+        label.style.whiteSpace = 'nowrap';
+      });
       addClick(node, () => toast(stageLabels[i % stageLabels.length] ?? '단계', { duration: 1500 }));
     });
     root.querySelectorAll<HTMLElement>('[class*="from-[#79dffd]"]').forEach(el => {
       el.style.lineHeight = '1.3';
       el.style.paddingBottom = '3px';
     });
+    Array.from(root.querySelectorAll<HTMLElement>('p'))
+      .filter(el => ['최근 프로젝트', '김철수 상병'].includes(el.textContent?.trim() ?? ''))
+      .forEach((label, i) => {
+        const card = label.parentElement?.parentElement;
+        if (card) {
+          card.classList.add('home-reveal-card');
+          card.style.animationDelay = `${80 + (i * 120)}ms`;
+        }
+      });
     return () => cleanups.forEach(fn => fn());
   }, [navigate]);
 
@@ -1440,6 +1630,7 @@ export default function App() {
   const [activeNav, setActiveNav] = useState(0);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeLesson, setActiveLesson] = useState(0);
 
   const navigate = useCallback((navIndex: number) => {
     setActiveNav(navIndex);
@@ -1460,6 +1651,15 @@ export default function App() {
   const goBack = useCallback(() => {
     setCurrentPage('vod');
     setSelectedCourse(null);
+  }, []);
+
+  const startLesson = useCallback((moduleIndex: number) => {
+    setActiveLesson(moduleIndex);
+    setCurrentPage('classroom');
+  }, []);
+
+  const closeClassroom = useCallback(() => {
+    setCurrentPage('course');
   }, []);
 
   const openProject = useCallback((project: Project) => {
@@ -1485,7 +1685,8 @@ export default function App() {
       <div className="hidden xl:flex w-screen h-[100dvh] max-w-full overflow-hidden bg-[#0c0c0d] items-center justify-center">
         {currentPage === 'home'          && <DesktopHomeView navigate={navigate} />}
         {currentPage === 'vod'           && <VodDesktopPage navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
-        {currentPage === 'course'        && selectedCourse  && <CourseDetailDesktopPage course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} />}
+        {currentPage === 'course'        && selectedCourse  && <CourseDetailDesktopPage course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} onStartLesson={startLesson} />}
+        {currentPage === 'classroom'     && selectedCourse  && <ClassroomDesktop course={selectedCourse} moduleIndex={activeLesson} onSelect={setActiveLesson} onClose={closeClassroom} navigate={navigate} />}
         {currentPage === 'project'       && <ProjectDesktopPage navigate={navigate} activeNav={activeNav} openProject={openProject} />}
         {currentPage === 'projectDetail' && selectedProject && <ProjectDetailDesktopPage project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
         {currentPage === 'mypage'        && <MyPageDesktopPage navigate={navigate} activeNav={activeNav} />}
@@ -1495,7 +1696,8 @@ export default function App() {
       <div className="xl:hidden min-h-[100dvh] w-full max-w-full overflow-x-clip bg-[#0c0c0d]">
         {currentPage === 'home'          && <MobileHomeView navigate={navigate} activeNav={activeNav} />}
         {currentPage === 'vod'           && <MobileVodView  navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
-        {currentPage === 'course'        && selectedCourse  && <CourseDetailMobileView course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} />}
+        {currentPage === 'course'        && selectedCourse  && <CourseDetailMobileView course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} onStartLesson={startLesson} />}
+        {currentPage === 'classroom'     && selectedCourse  && <ClassroomMobile course={selectedCourse} moduleIndex={activeLesson} onSelect={setActiveLesson} onClose={closeClassroom} navigate={navigate} />}
         {currentPage === 'project'       && <MobileProjectView navigate={navigate} activeNav={activeNav} openProject={openProject} />}
         {currentPage === 'projectDetail' && selectedProject && <ProjectDetailMobileView project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
         {currentPage === 'mypage'        && <MyPageMobileView navigate={navigate} activeNav={activeNav} />}
