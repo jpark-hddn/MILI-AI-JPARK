@@ -264,6 +264,15 @@
   will-change: transform, opacity, filter;
 }
 
+.home-background-fade {
+  animation: home-background-fade-in 900ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes home-background-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes home-panel-reveal {
   from {
     opacity: 0;
@@ -310,6 +319,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-background-fade { animation: none !important; opacity: 1 !important; }
   .home-reveal-card,
   .home-stage-reveal,
   .page-card-reveal,

@@ -1493,7 +1493,7 @@ function MobileHomeView({ navigate, activeNav }: { navigate: NavigateFn; activeN
   return (
     <div className="min-h-screen w-full bg-[#0c0c0d]">
       <div className="fixed inset-0 pointer-events-none -scale-y-100 overflow-hidden">
-        <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" className="home-background-fade absolute inset-0 w-full h-full object-cover" />
       </div>
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} activeNav={activeNav} navigate={navigate} />
       <MobileHeader onMenuOpen={() => setSidebarOpen(true)} navigate={navigate} onLogoClick={() => window.location.reload()} />
@@ -1716,7 +1716,7 @@ function DesktopHomeView({ navigate }: { navigate: NavigateFn }) {
       <VodDesktopSidebar activeNav={0} navigate={navigate} onLogoClick={() => window.location.reload()} />
       <main ref={viewportRef} onPointerMove={moveBackground} onPointerLeave={resetBackground} className="relative flex-1 h-full min-w-0 overflow-hidden bg-[#0c0c0d]" data-theme-surface="home">
         <div ref={backgroundRef} className="absolute -inset-[3%] pointer-events-none transition-transform duration-700 ease-out will-change-transform" style={{ transform: 'translate3d(0, 0, 0) scale(1.04)' }}>
-          <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" aria-hidden className="size-full object-cover -scale-x-100" />
+          <img src={mode === 'light' ? '/home-bg-light.png' : imgBg} alt="" aria-hidden className="home-background-fade size-full object-cover -scale-x-100" />
         </div>
         <div className={`absolute inset-0 pointer-events-none transition-colors duration-500 ${mode === 'light' ? 'bg-white/10' : 'bg-black/25'}`} />
         <div
