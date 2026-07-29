@@ -1757,46 +1757,55 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeLesson, setActiveLesson] = useState(0);
 
-  const navigate = useCallback((navIndex: number) => {
-    setActiveNav(navIndex);
-    setSelectedCourse(null);
-    setSelectedProject(null);
-    if (navIndex === 1) setCurrentPage('vod');
-    else if (navIndex === 2) setCurrentPage('project');
-    else if (navIndex === 6) setCurrentPage('mypage');
-    else setCurrentPage('home');
+  const applyHistoryRoute = useCallback((route: { page?: Page; nav?: number; courseId?: number; projectId?: number; lesson?: number }) => {
+    const page = route.page ?? 'home';
+    setCurrentPage(page);
+    setActiveNav(route.nav ?? (page === 'vod' || page === 'course' || page === 'classroom' ? 1 : page === 'project' || page === 'projectDetail' ? 2 : page === 'mypage' ? 6 : 0));
+    setSelectedCourse(route.courseId ? COURSES.find(c => c.id === route.courseId) ?? null : null);
+    setSelectedProject(route.projectId ? PROJECTS.find(p => p.id === route.projectId) ?? null : null);
+    setActiveLesson(route.lesson ?? 0);
   }, []);
+
+  useEffect(() => {
+    const initial = window.history.state?.miliRoute ?? { page: 'home', nav: 0 };
+    applyHistoryRoute(initial);
+    const onPopState = (event: PopStateEvent) => applyHistoryRoute(event.state?.miliRoute ?? { page: 'home', nav: 0 });
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [applyHistoryRoute]);
+
+  const pushRoute = useCallback((route: { page: Page; nav?: number; courseId?: number; projectId?: number; lesson?: number }) => {
+    window.history.pushState({ miliRoute: route }, '', window.location.href);
+    applyHistoryRoute(route);
+  }, [applyHistoryRoute]);
+
+  const navigate = useCallback((navIndex: number) => {
+    pushRoute({ page: navIndex === 1 ? 'vod' : navIndex === 2 ? 'project' : navIndex === 6 ? 'mypage' : 'home', nav: navIndex });
+  }, [pushRoute]);
 
   const openCourse = useCallback((course: Course) => {
-    setSelectedCourse(course);
-    setActiveNav(1);
-    setCurrentPage('course');
-  }, []);
+    pushRoute({ page: 'course', nav: 1, courseId: course.id });
+  }, [pushRoute]);
 
   const goBack = useCallback(() => {
-    setCurrentPage('vod');
-    setSelectedCourse(null);
-  }, []);
+    pushRoute({ page: 'vod', nav: 1 });
+  }, [pushRoute]);
 
   const startLesson = useCallback((moduleIndex: number) => {
-    setActiveLesson(moduleIndex);
-    setCurrentPage('classroom');
-  }, []);
+    pushRoute({ page: 'classroom', nav: 1, courseId: selectedCourse?.id, lesson: moduleIndex });
+  }, [pushRoute, selectedCourse]);
 
   const closeClassroom = useCallback(() => {
-    setCurrentPage('course');
-  }, []);
+    pushRoute({ page: 'course', nav: 1, courseId: selectedCourse?.id });
+  }, [pushRoute, selectedCourse]);
 
   const openProject = useCallback((project: Project) => {
-    setSelectedProject(project);
-    setActiveNav(2);
-    setCurrentPage('projectDetail');
-  }, []);
+    pushRoute({ page: 'projectDetail', nav: 2, projectId: project.id });
+  }, [pushRoute]);
 
   const goBackToProjects = useCallback(() => {
-    setCurrentPage('project');
-    setSelectedProject(null);
-  }, []);
+    pushRoute({ page: 'project', nav: 2 });
+  }, [pushRoute]);
 
   const toggleTheme = useCallback(() => {
     setThemeMode(mode => mode === 'dark' ? 'light' : 'dark');
