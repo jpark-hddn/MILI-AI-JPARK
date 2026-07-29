@@ -1918,8 +1918,6 @@ export default function B() {
         </div>
       </div>
       <Container />
-      <Sidebar />
-      <Sidebar1 />
       <Header />
       <Article />
       <Group2 />
