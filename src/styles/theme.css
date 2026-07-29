@@ -135,6 +135,29 @@
 
   html {
     font-size: var(--font-size);
+    width: 100%;
+    min-width: 320px;
+    min-height: 100%;
+    background: #0c0c0d;
+    overflow-x: clip;
+  }
+
+  body,
+  #root {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100%;
+    margin: 0;
+    background: #0c0c0d;
+    overflow-x: clip;
+  }
+
+  @media (min-width: 1280px) {
+    body,
+    #root {
+      height: 100dvh;
+      overflow: hidden;
+    }
   }
 
   h1 {

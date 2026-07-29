@@ -1396,10 +1396,26 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
-    const update = () => setScale(Math.min(window.innerWidth / DESIGN_WIDTH, window.innerHeight / DESIGN_HEIGHT));
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const viewportWidth = document.documentElement.clientWidth;
+        const viewportHeight = document.documentElement.clientHeight;
+        setScale(Math.max(0.1, Math.min(
+          viewportWidth / DESIGN_WIDTH,
+          viewportHeight / DESIGN_HEIGHT,
+        )));
+      });
+    };
     update();
     window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    window.visualViewport?.addEventListener('resize', update);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('resize', update);
+    };
   }, []);
 
   const navigate = useCallback((navIndex: number) => {
@@ -1442,8 +1458,8 @@ export default function App() {
         style: { background: '#1a1d21', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' },
       }} />
 
-      {/* Desktop (lg+) */}
-      <div className="hidden lg:flex size-full overflow-hidden bg-[#0c0c0d] items-center justify-center">
+      {/* Desktop (xl+): the home canvas is authored at exactly 1920 × 1080. */}
+      <div className="hidden xl:flex w-screen h-[100dvh] max-w-full overflow-hidden bg-[#0c0c0d] items-center justify-center">
         {currentPage === 'home'          && <DesktopHomeView scale={scale} navigate={navigate} />}
         {currentPage === 'vod'           && <VodDesktopPage navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
         {currentPage === 'course'        && selectedCourse  && <CourseDetailDesktopPage course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} />}
@@ -1452,8 +1468,8 @@ export default function App() {
         {currentPage === 'mypage'        && <MyPageDesktopPage navigate={navigate} activeNav={activeNav} />}
       </div>
 
-      {/* Mobile (<lg) */}
-      <div className="lg:hidden">
+      {/* Fluid tablet/mobile layout (<1280px). */}
+      <div className="xl:hidden min-h-[100dvh] w-full max-w-full overflow-x-clip bg-[#0c0c0d]">
         {currentPage === 'home'          && <MobileHomeView navigate={navigate} activeNav={activeNav} />}
         {currentPage === 'vod'           && <MobileVodView  navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
         {currentPage === 'course'        && selectedCourse  && <CourseDetailMobileView course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} />}
