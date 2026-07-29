@@ -350,6 +350,10 @@ html.light-mode [class*="bg-[#090b0e]"] {
   background-color: #f2f5f1 !important;
 }
 
+[data-theme-surface="home"] [data-name="브랜딩 B 로그인 후"] {
+  background-color: transparent !important;
+}
+
 html.light-mode [class*="bg-black"] {
   background-color: rgba(255, 255, 255, 0.86) !important;
 }
@@ -360,6 +364,34 @@ html.light-mode [class*="bg-white/"] {
 
 html.light-mode [class*="border-white"] {
   border-color: rgba(18, 24, 29, 0.13) !important;
+}
+
+html.light-mode .theme-gradient-surface,
+html.light-mode .theme-gradient-surface h1,
+html.light-mode .theme-gradient-surface h2,
+html.light-mode .theme-gradient-surface h3,
+html.light-mode .theme-gradient-surface p,
+html.light-mode .theme-gradient-surface button,
+html.light-mode .theme-gradient-surface [class~="text-white"] {
+  color: #ffffff !important;
+}
+
+html.light-mode .theme-gradient-surface [class*="text-white/20"] {
+  color: rgba(255, 255, 255, 0.30) !important;
+}
+
+html.light-mode .theme-gradient-surface [class*="text-white/45"] {
+  color: rgba(255, 255, 255, 0.58) !important;
+}
+
+html.light-mode .theme-gradient-surface [class*="text-white/60"],
+html.light-mode .theme-gradient-surface [class*="text-white/65"] {
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+html.light-mode .theme-gradient-surface [class*="text-white/70"],
+html.light-mode .theme-gradient-surface [class*="text-white/80"] {
+  color: rgba(255, 255, 255, 0.90) !important;
 }
 
 html.light-mode aside {

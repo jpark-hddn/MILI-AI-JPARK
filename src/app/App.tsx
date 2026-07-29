@@ -4,7 +4,6 @@ import TargetCursor from './components/TargetCursor';
 import { Toaster, toast } from 'sonner';
 import svgPaths from '../imports/branding-login/svg-6mc43d5pkl';
 import imgBg from '../imports/branding-login/2469702d1c965d44bc1a26e0f8da8adb8dbbaf9b.png';
-import imgProfile from '../imports/branding-login/d2b061e2b578e94cd99faba5cb07115f6b3f78b1.png';
 import { Search, ChevronDown, ChevronLeft, ChevronRight, BookOpen, Code2, List, Play, RotateCcw, CheckCircle2, Sun, Moon } from 'lucide-react';
 
 const HOME_DESIGN_WIDTH = 1920;
@@ -13,6 +12,7 @@ const HOME_SOURCE_SIDEBAR_WIDTH = 230;
 const HOME_CONTENT_WIDTH = HOME_DESIGN_WIDTH - HOME_SOURCE_SIDEBAR_WIDTH;
 const NAV_ITEMS = ['홈', 'VOD', '프로젝트', '커뮤니티', '역량진단', '학습 여정', '마이페이지', '서비스 소개'];
 const FILTERS = ['전체', '1주일', '2주일', '3주일', '4주 이상'];
+const imgProfile = '/profile-soldier.png';
 
 type Page = 'home' | 'vod' | 'course' | 'classroom' | 'project' | 'projectDetail' | 'mypage';
 type NavigateFn = (navIndex: number) => void;
@@ -195,7 +195,7 @@ function MobileHeader({ onMenuOpen, navigate }: { onMenuOpen: () => void; naviga
         <button className="cursor-target flex items-center gap-2 rounded-[14px] bg-white/5 border border-white/10 pl-[9px] pr-3 py-[7px]"
           onClick={() => toast('프로필', { duration: 1200 })}>
           <div className="size-[28px] rounded-full overflow-hidden bg-black/60 shrink-0 relative">
-            <img src={imgProfile} alt="profile" className="absolute max-w-none" style={{ width: '248%', height: '261%', top: '1.1%', left: '-77%' }} />
+            <img src={imgProfile} alt="김철수 상병 프로필" className="absolute inset-0 size-full object-cover object-top" />
           </div>
           <span className="text-[12px] font-bold text-white" style={{ fontFamily: 'Noto Sans KR,sans-serif' }}>로그인</span>
         </button>
@@ -248,7 +248,7 @@ function CourseCard({ course, compact, onOpen }: { course: Course; compact?: boo
       className="cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(course) : toast(course.topic, { description: '강의를 시작합니다', duration: 1500 })}>
       {/* Thumbnail */}
-      <div className={`relative w-full ${compact ? 'aspect-[4/2.8]' : 'aspect-[4/2.5]'} flex items-center justify-center overflow-hidden`}
+      <div className={`theme-gradient-surface relative w-full ${compact ? 'aspect-[4/2.8]' : 'aspect-[4/2.5]'} flex items-center justify-center overflow-hidden`}
         style={{ background: course.bg }}>
         {course.badge && (
           <span className={`absolute top-2.5 left-2.5 rounded-[6px] px-[7px] py-[3px] text-[10px] font-bold ${badgeStyle}`}
@@ -818,7 +818,7 @@ function MobileArticleCard() {
       <div className="p-5">
         <div className="flex items-start gap-3">
           <div className="size-[52px] rounded-full overflow-hidden bg-black/60 shrink-0 relative mt-[2px]">
-            <img src={imgProfile} alt="profile" className="absolute max-w-none" style={{ width:'248%', height:'261%', top:'1.1%', left:'-77%' }} />
+            <img src={imgProfile} alt="김철수 상병 프로필" className="absolute inset-0 size-full object-cover object-top" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -982,7 +982,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen?: (p: Proje
       className="cursor-target text-left flex flex-col rounded-[16px] overflow-hidden border border-white/[0.06] bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] hover:border-white/[0.1] transition-all duration-200 group"
       onClick={() => onOpen ? onOpen(project) : toast(project.title, { duration: 1500 })}>
       {/* Gradient Thumbnail */}
-      <div className="relative w-full aspect-[4/2.2] flex items-center justify-center overflow-hidden" style={{ background: project.bg }}>
+      <div className="theme-gradient-surface relative w-full aspect-[4/2.2] flex items-center justify-center overflow-hidden" style={{ background: project.bg }}>
         <span className="absolute top-3 left-3 bg-white/20 backdrop-blur-sm text-white text-[11px] font-bold px-3 py-1 rounded-full border border-white/30"
           style={{ fontFamily: 'Pretendard,sans-serif' }}>PBL PROJECT</span>
         <span className="text-white/20 font-black text-[64px] leading-none select-none group-hover:scale-110 transition-transform duration-300"
@@ -1016,7 +1016,7 @@ function ProjectContent({ compact, onOpenProject }: { compact?: boolean; onOpenP
   return (
     <div className={compact ? 'px-4 pt-6 pb-10' : 'px-8 pt-10 pb-10 max-w-[1200px] mx-auto'}>
       {/* Hero banner */}
-      <div className={`relative rounded-[20px] overflow-hidden mb-8 ${compact ? 'mb-5' : 'mb-10'}`}
+      <div className={`theme-gradient-surface relative rounded-[20px] overflow-hidden mb-8 ${compact ? 'mb-5' : 'mb-10'}`}
         style={{ background: 'linear-gradient(135deg,#00453b,#006e5a,#008c6e)' }}>
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, #aaff19 0%, transparent 60%)' }} />
@@ -1074,7 +1074,7 @@ function ProjectDetailBody({ project, onBack, mobile }: { project: Project; onBa
   return (
     <div>
       {/* Hero */}
-      <div className="relative">
+      <div className="theme-gradient-surface relative">
         <div className="absolute inset-0" style={{ background: project.bg }} />
         <div className="absolute inset-0 bg-black/60" />
         <div className={`relative ${px} pt-6 pb-10`}>
@@ -1175,7 +1175,7 @@ function ProjectDetailBody({ project, onBack, mobile }: { project: Project; onBa
         {!mobile && (
           <div className="w-[280px] shrink-0 sticky top-6">
             <div className="rounded-[20px] bg-[rgba(255,255,255,0.03)] border border-white/[0.08] overflow-hidden">
-              <div className="h-[120px] flex items-center justify-center" style={{ background: project.bg }}>
+              <div className="theme-gradient-surface h-[120px] flex items-center justify-center" style={{ background: project.bg }}>
                 <span className="text-white/20 font-black text-[48px]" style={{ fontFamily: 'Orbitron,sans-serif' }}>PBL</span>
               </div>
               <div className="p-5 space-y-4">
@@ -1308,7 +1308,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
             {/* Profile row */}
             <div className="flex items-start gap-4 mb-5">
               <div className="size-[64px] md:size-[72px] rounded-full overflow-hidden bg-black/60 shrink-0 relative border-2 border-[rgba(170,255,25,0.25)]">
-                <img src={imgProfile} alt="profile" className="absolute max-w-none" style={{ width: '248%', height: '261%', top: '1.1%', left: '-77%' }} />
+                <img src={imgProfile} alt="김철수 상병 프로필" className="absolute inset-0 size-full object-cover object-top" />
               </div>
               <div className="flex-1 min-w-0 pt-0.5">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -1348,7 +1348,7 @@ function MyPageContent({ compact, navigate }: { compact?: boolean; navigate: Nav
         </div>
 
         {/* ── 온보딩 배너 ── */}
-        <div className="rounded-[16px] overflow-hidden mb-6 relative"
+        <div className="theme-gradient-surface rounded-[16px] overflow-hidden mb-6 relative"
           style={{ background: 'linear-gradient(135deg,#005c4b,#00875a)' }}>
           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 90% 50%,#aaff19 0%,transparent 55%)' }} />
           <div className="relative flex items-center justify-between gap-4 px-5 py-4">

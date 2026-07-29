@@ -1,7 +1,6 @@
 import svgPaths from "./svg-6mc43d5pkl";
 import imgImage2542 from "./2469702d1c965d44bc1a26e0f8da8adb8dbbaf9b.png";
-import imgChatGptImage20267240609381 from "./d2b061e2b578e94cd99faba5cb07115f6b3f78b1.png";
-import img20260728112211 from "./6247666ad7ce924a857257dfbe31e4018d015ea2.png";
+const profileImage = "/profile-soldier.png";
 
 function Heading() {
   return (
@@ -771,8 +770,8 @@ function Frame13() {
             <ellipse cx="13.7926" cy="14.0519" fill="var(--fill-0, black)" id="Ellipse 2" opacity="0.6" rx="13.7926" ry="14.0519" />
           </svg>
         </div>
-        <div className="absolute h-[73.089px] left-[-21.47px] top-[0.62px] w-[68.465px]" data-name="ChatGPT Image 2026년 7월 24일 오후 06_09_38 1">
-          <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgChatGptImage20267240609381} />
+        <div className="absolute inset-0" data-name="Profile Image">
+          <img alt="김철수 상병 프로필" className="absolute inset-0 object-cover object-top pointer-events-none size-full" src={profileImage} />
         </div>
       </div>
     </div>
@@ -1321,10 +1320,9 @@ function Group9() {
     <div className="absolute contents left-[27px] top-[30px]">
       <div className="absolute h-[221px] left-[27px] top-[30px] w-[198px]" data-name="스크린샷 2026-07-28 오후 1.12.21 1">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img alt="" className="absolute h-[110.8%] left-[-14.06%] max-w-none top-[-0.05%] w-[114.06%]" src={img20260728112211} />
+          <img alt="김철수 상병 프로필" className="absolute inset-0 size-full object-cover object-top" src={profileImage} />
         </div>
       </div>
-      <div className="absolute bg-[#aaff19] h-[160px] left-[48px] mix-blend-screen rounded-[88.5px] top-[61px] w-[154px]" />
     </div>
   );
 }
@@ -1911,7 +1909,7 @@ function Group8() {
 
 export default function B() {
   return (
-    <div className="bg-[#0c0c0d] relative size-full" data-name="브랜딩 B 로그인 후">
+    <div className="relative size-full" data-name="브랜딩 B 로그인 후">
       <div className="absolute flex h-[1080px] items-center justify-center left-0 top-0 w-[1919px]">
         <div className="-scale-y-100 flex-none rotate-180">
           <div className="h-[1080px] relative w-[1919px]" data-name="image 2542">
