@@ -286,7 +286,12 @@ void main(){
     M *= fade;
   }
 
-  vec3 color = uColor;
+  // Five-step green palette: quiet pixels stay dark and active/rippled pixels
+  // climb toward the current neon green.
+  float shadeLevel = floor(clamp(feed * 1.8 + 0.55, 0.0, 0.9999) * 5.0);
+  float shadeMix = shadeLevel / 4.0;
+  vec3 darkestGreen = uColor * vec3(0.10, 0.16, 0.07);
+  vec3 color = mix(darkestGreen, uColor, shadeMix);
 
   // sRGB gamma correction - convert linear to sRGB for accurate color output
   vec3 srgbColor = mix(
