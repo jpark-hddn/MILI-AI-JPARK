@@ -23,6 +23,34 @@ const ThemeContext = createContext<{ mode: ThemeMode; toggle: () => void }>({
   toggle: () => undefined,
 });
 
+function PageFade({ page, mobile = false, children }: { page: Page; mobile?: boolean; children: React.ReactNode }) {
+  const [displayPage, setDisplayPage] = useState(page);
+  const [visible, setVisible] = useState(true);
+  const previousChildren = useRef(children);
+
+  if (page === displayPage) previousChildren.current = children;
+
+  useEffect(() => {
+    if (page === displayPage) return;
+    setVisible(false);
+    const swapTimer = window.setTimeout(() => {
+      previousChildren.current = children;
+      setDisplayPage(page);
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => setVisible(true)));
+    }, 220);
+    return () => window.clearTimeout(swapTimer);
+  }, [children, displayPage, page]);
+
+  return (
+    <div
+      data-page-transition={displayPage}
+      className={`${mobile ? 'min-h-[100dvh] w-full' : 'absolute inset-0 size-full'} transition-opacity duration-[220ms] ease-out ${visible ? 'opacity-100' : 'opacity-0'}`}
+    >
+      {page === displayPage ? children : previousChildren.current}
+    </div>
+  );
+}
+
 function ThemeToggle({ floating = false }: { floating?: boolean }) {
   const { mode, toggle } = useContext(ThemeContext);
   const isLight = mode === 'light';
@@ -1794,26 +1822,30 @@ export default function App() {
       }} />
 
       {/* Desktop (xl+): the home canvas is authored at exactly 1920 × 1080. */}
-      <div className="hidden xl:flex w-screen h-[100dvh] max-w-full overflow-hidden bg-[#0c0c0d] items-center justify-center">
-        {currentPage === 'home'          && <DesktopHomeView navigate={navigate} />}
-        {currentPage === 'vod'           && <VodDesktopPage navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
-        {currentPage === 'course'        && selectedCourse  && <CourseDetailDesktopPage course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} onStartLesson={startLesson} />}
-        {currentPage === 'classroom'     && selectedCourse  && <ClassroomDesktop course={selectedCourse} moduleIndex={activeLesson} onSelect={setActiveLesson} onClose={closeClassroom} navigate={navigate} />}
-        {currentPage === 'project'       && <ProjectDesktopPage navigate={navigate} activeNav={activeNav} openProject={openProject} />}
-        {currentPage === 'projectDetail' && selectedProject && <ProjectDetailDesktopPage project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
-        {currentPage === 'mypage'        && <MyPageDesktopPage navigate={navigate} activeNav={activeNav} />}
+      <div className="relative hidden xl:flex w-screen h-[100dvh] max-w-full overflow-hidden bg-[#0c0c0d] items-center justify-center">
+        <PageFade page={currentPage}>
+          {currentPage === 'home'          && <DesktopHomeView navigate={navigate} />}
+          {currentPage === 'vod'           && <VodDesktopPage navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
+          {currentPage === 'course'        && selectedCourse  && <CourseDetailDesktopPage course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} onStartLesson={startLesson} />}
+          {currentPage === 'classroom'     && selectedCourse  && <ClassroomDesktop course={selectedCourse} moduleIndex={activeLesson} onSelect={setActiveLesson} onClose={closeClassroom} navigate={navigate} />}
+          {currentPage === 'project'       && <ProjectDesktopPage navigate={navigate} activeNav={activeNav} openProject={openProject} />}
+          {currentPage === 'projectDetail' && selectedProject && <ProjectDetailDesktopPage project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
+          {currentPage === 'mypage'        && <MyPageDesktopPage navigate={navigate} activeNav={activeNav} />}
+        </PageFade>
         {currentPage !== 'home' && currentPage !== 'classroom' && <ThemeToggle floating />}
       </div>
 
       {/* Fluid tablet/mobile layout (<1280px). */}
       <div className="xl:hidden min-h-[100dvh] w-full max-w-full overflow-x-clip bg-[#0c0c0d]">
-        {currentPage === 'home'          && <MobileHomeView navigate={navigate} activeNav={activeNav} />}
-        {currentPage === 'vod'           && <MobileVodView  navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
-        {currentPage === 'course'        && selectedCourse  && <CourseDetailMobileView course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} onStartLesson={startLesson} />}
-        {currentPage === 'classroom'     && selectedCourse  && <ClassroomMobile course={selectedCourse} moduleIndex={activeLesson} onSelect={setActiveLesson} onClose={closeClassroom} navigate={navigate} />}
-        {currentPage === 'project'       && <MobileProjectView navigate={navigate} activeNav={activeNav} openProject={openProject} />}
-        {currentPage === 'projectDetail' && selectedProject && <ProjectDetailMobileView project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
-        {currentPage === 'mypage'        && <MyPageMobileView navigate={navigate} activeNav={activeNav} />}
+        <PageFade page={currentPage} mobile>
+          {currentPage === 'home'          && <MobileHomeView navigate={navigate} activeNav={activeNav} />}
+          {currentPage === 'vod'           && <MobileVodView  navigate={navigate} activeNav={activeNav} openCourse={openCourse} />}
+          {currentPage === 'course'        && selectedCourse  && <CourseDetailMobileView course={selectedCourse} navigate={navigate} activeNav={activeNav} goBack={goBack} onStartLesson={startLesson} />}
+          {currentPage === 'classroom'     && selectedCourse  && <ClassroomMobile course={selectedCourse} moduleIndex={activeLesson} onSelect={setActiveLesson} onClose={closeClassroom} navigate={navigate} />}
+          {currentPage === 'project'       && <MobileProjectView navigate={navigate} activeNav={activeNav} openProject={openProject} />}
+          {currentPage === 'projectDetail' && selectedProject && <ProjectDetailMobileView project={selectedProject} navigate={navigate} activeNav={activeNav} goBack={goBackToProjects} />}
+          {currentPage === 'mypage'        && <MyPageMobileView navigate={navigate} activeNav={activeNav} />}
+        </PageFade>
       </div>
     </ThemeContext.Provider>
   );
